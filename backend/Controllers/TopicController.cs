@@ -1,0 +1,53 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using QuizGame.Data;
+using QuizGame.Models;
+using QuizGame.Service.Questions;
+using QuizGame.Service.Topics;
+
+namespace QuizGame.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TopicController : ControllerBase
+{
+    private readonly ITopicService _topicService;
+
+    public TopicController(ITopicService topicService)
+    {
+        _topicService = topicService;
+    }
+
+    [HttpGet("get-all")]
+    public async Task<List<Topic>> GetAll()
+    {
+        return await _topicService.GetAll();
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromBody]TopicDto topic, bool isRandom)
+    {
+        var result = await _topicService.Create(topic, isRandom);
+        if (result == null)
+            return BadRequest("Not enough question");
+        return Ok(result);
+    }
+
+    [HttpPost("create-question-topic")] 
+    public async Task<List<Question>> AddListQuestionToTopic(Guid topicId, [FromBody]List<Guid> questions)
+    {
+        return await _topicService.AddListQuestionToTopic(topicId, questions);
+    }
+
+    [HttpPost("random-question-topic")]
+    public async Task<List<Question>> RandomQuestionTopic(Guid topicId, int numberQuestion)
+    {
+        return await _topicService.RandomQuestionTopic(topicId, numberQuestion);
+    }
+
+    [HttpDelete("delete-question-topic")]
+    public async Task<IdentityResult> RemoveQuestionToTopic(Guid questionId)
+    {
+        return await _topicService.RemoveQuestionToTopic(questionId);
+    }
+}
