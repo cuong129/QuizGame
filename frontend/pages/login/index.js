@@ -1,12 +1,11 @@
 import { authLogin } from '@/redux/auth/auth-thunk';
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 
 export default function Login() {
-  const router = useRouter();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const [formData, setFormData] = useState({
@@ -18,8 +17,7 @@ export default function Login() {
     if (!token) return;
     Cookies.set('token', token, { expires: 2 });
 
-    router.push('/question').then((_) => console.log('Go to dashboard'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    Router.push('/question').then((_) => console.log('Go to dashboard'));
   }, [token]);
 
   const handleInput = (e) => {
