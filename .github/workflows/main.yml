@@ -3,20 +3,20 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push request event for the master branch
-  push:    
+  push:
     branches: [main]
 
 jobs:
   deploy:
     # Our previously created self-hosted runner
     runs-on: self-hosted
-    
+
     strategy:
       matrix:
         dotnet-version: ['7.0.x']
-        
+
     env:
-      DOTNET_INSTALL_DIR: "./.dotnet"
+      DOTNET_INSTALL_DIR: './.dotnet'
 
     # A sequence of tasks that will execute as part of the job
     steps:
@@ -25,8 +25,8 @@ jobs:
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}   
-          
+          dotnet-version: ${{ matrix.dotnet-version }}
+
       - name: Deploy Backend
         run: |
           dotnet restore
@@ -50,7 +50,5 @@ jobs:
         run: |
           npm install --force
           npm run build
-          pm2 restart frontend
+          pm2 restart quizgame
         working-directory: ./frontend
-          
-      
