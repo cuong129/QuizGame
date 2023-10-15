@@ -7,5 +7,6 @@ public interface IQuestionService
 {
     Task<IdentityResult> ImportExcelData(IFormFile excelFile);
     Task<List<Question>> GetAll();
+    Task<List<Question>> GetAvaliableQuestion(string schoolLevel, string type);
     Task<List<Question>> GetListQuestionByTopicId(Guid topicId);
 }

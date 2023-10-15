@@ -23,6 +23,12 @@ public class QuestionController : ControllerBase
         return await _questionService.GetAll();
     }
 
+    [HttpGet("get-avaliable")]
+    public async Task<List<Question>> GetAvaliableQuestion(string schoolLevel, string type)
+    {
+        return await _questionService.GetAvaliableQuestion(schoolLevel, type);
+    }
+
     [HttpGet("get-question-by-id")]
     public async Task<List<Question>> GetListQuestionByTopicId(Guid topicId)
     {

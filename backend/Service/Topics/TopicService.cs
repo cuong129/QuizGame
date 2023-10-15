@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using QuizGame.Common;
 using QuizGame.Data;
+using QuizGame.Enums;
 using QuizGame.Models;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -43,14 +45,16 @@ public class TopicService : ITopicService
             var topicEntity = new Topic
             {
                 Name = topic.Name,
-                Type = topic.Type
+                Type = topic.SchoolLevel
             };
 
             await _dbContext.Topics.AddAsync(topicEntity);
 
             if (isRandom)
             {
-                var questions = await _dbContext.Questions.Where(x => x.TopicId == null).ToListAsync();
+                var questions = await _dbContext.Questions
+                    .Where(x => x.TopicId == null && x.SchoolLevel == topic.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.TracNghiem))
+                    .ToListAsync();
 
                 var random = new Random();
 
@@ -77,7 +81,7 @@ public class TopicService : ITopicService
         }
         catch (Exception)
         {
-            throw;
+            return null;
         }
     }
 

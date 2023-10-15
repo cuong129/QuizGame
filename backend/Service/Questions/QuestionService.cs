@@ -30,6 +30,20 @@ public class QuestionService : IQuestionService
         }
     }
 
+    public async Task<List<Question>> GetAvaliableQuestion(string schoolLevel, string type)
+    {
+        try
+        {
+            var result = await _dbContext.Questions
+                .Where(x => x.SchoolLevel == schoolLevel && x.Type == type && x.TopicId == null).ToListAsync();
+            return result;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<List<Question>> GetListQuestionByTopicId(Guid topicId)
     {
         try
