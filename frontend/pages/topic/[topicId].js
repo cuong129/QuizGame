@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { Typography, Button, IconButton, Chip } from '@material-tailwind/react';
 import classNames from 'classnames';
 import { AddQuestionsDialog } from '@/components/AddQuestionsDialog';
+import { ApiGetTopicById } from '@/utils/endpoints';
+import axios from 'axios';
 
-const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Employed', ''];
+const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Cấp bậc', 'Loại câu hỏi', ''];
 
 const TABLE_ROWS = [
   {
@@ -39,17 +41,17 @@ export default function TopicDetail({ topicId }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [notFound, setNotFound] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState();
+
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
       try {
-        const result = await new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(topicId === 'test1234');
-          }, 1000);
-        });
-        setNotFound(result);
+        const response = await axios.get(ApiGetTopicById + topicId,);
+        setData(response.data);
+        console.log(response);
+        setNotFound(response.data == null);
       } finally {
         setIsLoading(false);
       }
@@ -76,7 +78,7 @@ export default function TopicDetail({ topicId }) {
                 </li>
                 <li class='flex items-center font-sans text-sm font-normal leading-normal text-green-500 cursor-pointer'>
                   {/* TODO: Topic name */}
-                  {topicId}
+                  {data?.topic?.name}
                 </li>
               </ol>
             </nav>
@@ -84,7 +86,7 @@ export default function TopicDetail({ topicId }) {
 
           <div className='flex flex-row justify-between'>
             <div className='flex mb-4'>
-              <Typography style={{ fontSize: 26 }}>{topicId}</Typography>
+              <Typography style={{ fontSize: 26 }}>{data?.topic?.name}</Typography>
               <div className='flex items-center ml-4'>
                 <Chip
                   variant='outlined'
@@ -122,21 +124,21 @@ export default function TopicDetail({ topicId }) {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROWS.map(({ name, job, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+              {data?.questions?.length > 0 && data.questions.map(({ id, request, answer, schoolLevel, type}, index) => {
+                const isLast = index === data?.questions.length - 1;
                 const classes = isLast
                   ? 'p-4'
                   : 'p-4 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={name}>
+                  <tr key={id}>
                     <td className={classes}>
                       <Typography
                         variant='small'
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {name}
+                        {request}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -145,7 +147,7 @@ export default function TopicDetail({ topicId }) {
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {job}
+                        {answer}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -154,7 +156,16 @@ export default function TopicDetail({ topicId }) {
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {date}
+                        {schoolLevel}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {type}
                       </Typography>
                     </td>
                     <td className={classNames(classes, 'w-[50px]')}>

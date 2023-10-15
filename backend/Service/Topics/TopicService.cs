@@ -38,22 +38,22 @@ public class TopicService : ITopicService
         }
     }
 
-    public async Task<Topic?> Create(TopicDto topic, bool isRandom)
+    public async Task<Topic?> Create(TopicCreateDto topicCreateDto)
     {
         try
         {
             var topicEntity = new Topic
             {
-                Name = topic.Name,
-                Type = topic.SchoolLevel
+                Name = topicCreateDto.Name,
+                Type = topicCreateDto.SchoolLevel
             };
 
             await _dbContext.Topics.AddAsync(topicEntity);
 
-            if (isRandom)
+            if (topicCreateDto.IsRandom)
             {
                 var questions = await _dbContext.Questions
-                    .Where(x => x.TopicId == null && x.SchoolLevel == topic.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.TracNghiem))
+                    .Where(x => x.TopicId == null && x.SchoolLevel == topicCreateDto.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.TracNghiem))
                     .ToListAsync();
 
                 var random = new Random();
@@ -93,6 +93,27 @@ public class TopicService : ITopicService
         }
         catch (Exception)
         {
+            throw;
+        }
+    }
+
+    public async Task<TopicQuestionDto> GetTopicById(Guid topicId)
+    {
+        try
+        {
+            var topic = await _dbContext.Topics.SingleOrDefaultAsync(x => x.Id == topicId);
+            var listQuestion = await _dbContext.Questions.Where(x => x.TopicId == topicId).ToListAsync();
+            var result = new TopicQuestionDto
+            {
+                Topic = topic,
+                Questions = listQuestion
+            };
+
+            return result;
+        }
+        catch (Exception)
+        {
+
             throw;
         }
     }
