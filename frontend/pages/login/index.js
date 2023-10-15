@@ -11,12 +11,12 @@ export default function Login() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    if (!token) return;
-    Cookies.set('token', token, { expires: 2 });
+  // useEffect(() => {
+  //   if (!token) return;
+  //   Cookies.set('token', token, { expires: 2 });
 
-    Router.push('/question').then((_) => console.log('Go to dashboard'));
-  }, [token]);
+  //   Router.push('/question').then((_) => console.log('Go to dashboard'));
+  // }, [token]);
 
   const onSubmit = () => {
     //TODO: authen
