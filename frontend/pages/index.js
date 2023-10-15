@@ -54,6 +54,7 @@ export default function Home() {
   };
   const handleAddPlayer = () => {
     if (!name) return;
+    if (players?.length === 4) return;
     setPlayers([...players, name]);
     setName('');
   };

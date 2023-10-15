@@ -9,6 +9,8 @@ import ScoreDrawer from '@/components/ScoreDrawer';
 import DrawerButton from '@/components/DrawerButton';
 import MultipleChoiceQuestionWithImage from '@/components/MultipleChoiceQuestionWithImage';
 import Rule from '@/components/Rule';
+import RuleTwo from '@/components/RuleTwo';
+import RuleThree from '@/components/RuleThree';
 import { QUESTIONS, QUESTION_TYPE } from '@/utils/constants';
 import MultipleChoiceQuestion from '@/components/MultipleChoiceQuestion';
 import ScoreBoardScreen from '@/components/ScoreBoardScreen';
@@ -33,7 +35,7 @@ export default function Game() {
 
   const [isStar, setIsStar] = useState(false);
 
-  const [isDisabledCounter, setIsDiabledCounter] = useState(false);
+  const [isDisabledCounter, setIsDisabledCounter] = useState(false);
 
   const [isFinish, setIsFinish] = useState(false);
 
@@ -96,6 +98,7 @@ export default function Game() {
     newPlayers[index].score += value;
     setPlayers(newPlayers);
   };
+
   //if (isLoading) return <h1>Loading...</h1>;
   if (isFinish)
     return <ScoreBoardScreen title='Tri thức an toàn' players={players} />;
@@ -114,7 +117,7 @@ export default function Game() {
         {!isStartGame ? (
           // BẮT ĐẦU THI
           <>
-            <Rule />
+            <RuleThree />
             <Button
               className='bg-primary-dark h-[60px] flex items-center justify-center gap-3 w-60 !absolute right-[6.25vw] bottom-4 border-2 border-white'
               onClick={() => setIsStartGame(true)}
