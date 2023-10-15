@@ -24,10 +24,16 @@ public class TopicController : ControllerBase
         return await _topicService.GetAll();
     }
 
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody]TopicDto topic, bool isRandom)
+    [HttpGet("{id}")]
+    public async Task<TopicQuestionDto> GetTopicById(Guid id)
     {
-        var result = await _topicService.Create(topic, isRandom);
+        return await _topicService.GetTopicById(id);
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromBody] TopicCreateDto topic)
+    {
+        var result = await _topicService.Create(topic);
         if (result == null)
             return BadRequest("Not enough question");
         return Ok(result);

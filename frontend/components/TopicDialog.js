@@ -28,7 +28,8 @@ export function TopicDialog({ open, onClose }) {
     try {
       const response = await axios.post(ApiCreateTopic, {
         name,
-        type: isPrimary ? 'TH' : 'THCS',
+        schoolLevel: isPrimary ? 'TH' : 'THCS',
+        isRandom
       });
       if (response?.id) {
         router.push(`/topic/${id}`);
