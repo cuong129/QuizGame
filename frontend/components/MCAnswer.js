@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Typography } from '@material-tailwind/react';
 
@@ -28,7 +28,7 @@ const MCAnswer = ({ text, label, answerLabel, isShowAnswer }) => {
       </div>
       <Typography
         className={classNames(
-          'text-[28px] font-semibold whitespace-normal ml-[18px] max-w-[34vw] text-center',
+          'text-[28px] font-semibold whitespace-normal ml-[18px] max-w-[33vw] text-center',
           isCorrectAnswer && 'text-white'
         )}
       >

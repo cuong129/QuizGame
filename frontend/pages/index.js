@@ -53,6 +53,7 @@ export default function Home() {
     }
   };
   const handleAddPlayer = () => {
+    if (!name) return;
     setPlayers([...players, name]);
     setName('');
   };

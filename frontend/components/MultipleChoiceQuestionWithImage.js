@@ -1,6 +1,7 @@
 import ClickableMCAnswer from './ClickableMCAnswer';
 import { Typography } from '@material-tailwind/react';
 import { MC_LABELS, MC_ANSWERS } from '@/utils/constants';
+import Image from 'next/image';
 const MultipleChoiceQuestionWithImage = ({
   isDisabled,
   onClickAnswer,
@@ -14,10 +15,15 @@ const MultipleChoiceQuestionWithImage = ({
             Câu 01
           </Typography>
         </div>
-        <div className='flex flex-col justify-center h-full'>
-          <Typography className='font-extrabold text-center text-[38px]'>
-            Trong đô thị trường hợp nào dưới đây xe không được dùng còi (trừ các
-            xe ưu tiên theo Luật định)?
+        <div className='flex flex-col h-full'>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className='mx-auto w-full h-[70%] rounded-xl'
+            alt='image'
+            src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80'
+          />
+          <Typography className='font-extrabold text-center text-[38px] mt-4'>
+            Theo hướng mũi tên, những hướng nào xe mô tô được phép đi?
           </Typography>
         </div>
       </div>
