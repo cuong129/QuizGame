@@ -8,31 +8,19 @@ import Cookies from 'js-cookie';
 export default function Login() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  const [formData, setFormData] = useState({
-    userName: '',
-    password: '',
-  });
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
-  // useEffect(() => {
-  //   if (!token) return;
-  //   Cookies.set('token', token, { expires: 2 });
+  useEffect(() => {
+    if (!token) return;
+    Cookies.set('token', token, { expires: 2 });
 
-  //   Router.push('/question').then((_) => console.log('Go to dashboard'));
-  // }, [token]);
+    Router.push('/question').then((_) => console.log('Go to dashboard'));
+  }, [token]);
 
-  const handleInput = (e) => {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [fieldName]: fieldValue,
-    }));
-  };
   const onSubmit = () => {
     //TODO: authen
-    dispatch(authLogin(formData));
-    console.log(formData);
+    dispatch(authLogin({ userName, password }));
   };
   return (
     <Card shadow={false} className='flex items-center mt-8'>
@@ -46,16 +34,16 @@ export default function Login() {
             name='userName'
             size='lg'
             label='Tài khoản'
-            value={formData.userName}
-            onChange={handleInput}
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
           />
           <Input
             type='password'
             name='password'
             size='lg'
             label='Mật khẩu'
-            value={formData.password}
-            onChange={handleInput}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <Button onClick={onSubmit} className='mt-6 bg-blue-600' fullWidth>
