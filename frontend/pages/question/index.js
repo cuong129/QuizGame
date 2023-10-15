@@ -6,7 +6,7 @@ import {
   Button,
 } from '@material-tailwind/react';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Employed', ''];
 
 const TABLE_ROWS = [
