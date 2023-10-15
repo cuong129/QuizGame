@@ -5,7 +5,7 @@ export default function Banner({ title }) {
     <div
       className='absolute top-7 w-[1000px] h-[104px]  flex justify-center items-center'
       style={{
-        backgroundImage: "url('/Header.png/')",
+        backgroundImage: "url('/Header.png')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
