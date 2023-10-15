@@ -1,4 +1,3 @@
-import AuthRequired from '@/components/AuthRequired';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import {
   Typography,
