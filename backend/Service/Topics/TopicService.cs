@@ -4,7 +4,6 @@ using QuizGame.Common;
 using QuizGame.Data;
 using QuizGame.Enums;
 using QuizGame.Models;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace QuizGame.Service.Topics;
 
@@ -16,15 +15,15 @@ public class TopicService : ITopicService
         _dbContext = dbContext;
     }
 
-    public async Task<List<Question>> AddListQuestionToTopic(Guid topicId, List<Guid> questions)
+    public async Task<List<Question>> AddListQuestionToTopic(TopicQuestionCreateDto topicQuestionCreateDto)
     {
         try
         {
             var result = new List<Question>();
-            foreach (var questionId in questions)
+            foreach (var questionId in topicQuestionCreateDto.QuestionIds)
             {
                 var question = await _dbContext.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
-                question.TopicId = topicId;
+                question.TopicId = topicQuestionCreateDto.TopicId;
 
                 await _dbContext.SaveChangesAsync();
                 result.Add(question);
@@ -45,7 +44,8 @@ public class TopicService : ITopicService
             var topicEntity = new Topic
             {
                 Name = topicCreateDto.Name,
-                Type = topicCreateDto.SchoolLevel
+                Type = topicCreateDto.Type,
+                SchoolLevel = topicCreateDto.SchoolLevel
             };
 
             await _dbContext.Topics.AddAsync(topicEntity);
@@ -155,6 +155,25 @@ public class TopicService : ITopicService
             question.TopicId = null;
 
             await _dbContext.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError
+            {
+                Description = ex.Message
+            });
+        }
+    }
+
+    public async Task<IdentityResult> Delete(Guid id)
+    {
+        try
+        {
+            var topic = await _dbContext.Topics.SingleOrDefaultAsync(x => x.Id == id);
+            _dbContext.Topics.Remove(topic);
+            await _dbContext.SaveChangesAsync();
+
             return IdentityResult.Success;
         }
         catch (Exception ex)

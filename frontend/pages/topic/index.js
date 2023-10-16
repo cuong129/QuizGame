@@ -6,7 +6,7 @@ import { TopicDialog } from "@/components/TopicDialog";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from 'axios';
-import { ApiGetAllTopic } from '@/utils/endpoints';
+import { ApiDeleteQuestion, ApiGetAllTopic, ApiRemoveTopic } from '@/utils/endpoints';
 
 const TABLE_HEAD = ["Bộ đề", "Loại đề", ""];
 
@@ -56,6 +56,11 @@ export default function Topic() {
       }
     })();
   }, []);
+
+  const handleRemoveTopic = (id) => {
+    axios.delete(ApiRemoveTopic + id);
+    window.location.reload();
+  }
 
   return (
     <>
@@ -119,7 +124,7 @@ export default function Topic() {
                       {type}
                     </Typography>
                   </td>
-                  <td className={classNames(classes, "w-[50px]")}>
+                  <td className={classNames(classes, "w-[50px]")} onClick={() => handleRemoveTopic(id)}>
                     <IconButton variant="text" color="red">
                       <i className="fas fa-trash" />
                     </IconButton>

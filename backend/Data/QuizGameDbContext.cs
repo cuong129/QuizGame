@@ -46,5 +46,8 @@ public class QuizGameDbContext : IdentityDbContext
         modelBuilder.Entity<Topic>()
             .Property(p => p.Type)
             .IsRequired();
+        modelBuilder.Entity<Topic>()
+            .Property(p => p.SchoolLevel)
+            .IsRequired();
     }
 }

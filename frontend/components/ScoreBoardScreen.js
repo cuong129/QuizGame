@@ -2,10 +2,11 @@ import { Typography, Button } from '@material-tailwind/react';
 import Banner from './Banner';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
 import First from '../public/Icon 1st.png';
 import Second from '../public/Icon 2nd.png';
 import Third from '../public/Icon 3rd.png';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 
 const ScoreLine = ({ index, name, score, isRoundOne }) => {
   const imgSrc =
@@ -39,6 +40,21 @@ export default function ScoreBoardScreen({ players, isRoundOne }) {
   const handleFinish = () => {
     router.push('/');
   };
+
+  const handleExportExcel = () => {
+    let header = ['Tên đội', 'Tổng điểm'];
+    const ws = XLSX.utils.book_new();
+    XLSX.utils.sheet_add_aoa(ws, [header]);
+    XLSX.utils.sheet_add_json(ws, players, { origin: 'A2', skipHeader: true });
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, {
+      bookType: 'xlsx',
+      type: 'array',
+      cellStyles: true,
+    });
+    const finalData = new Blob([excelBuffer], { type: 'xlsx' });
+    FileSaver.saveAs(finalData, 'Data.xlsx');
+  };
   return (
     <div
       className='relative flex flex-col items-center justify-center w-screen h-screen'
@@ -63,7 +79,13 @@ export default function ScoreBoardScreen({ players, isRoundOne }) {
             />
           ))}
       </div>
-      <div className='absolute bottom-10 right-10'>
+      <div className='absolute flex justify-between w-[90%] mx-10 bottom-10'>
+        <Button
+          className='bg-green-600 h-[60px] flex items-center justify-center border-2 border-white opacity-50 hover:opacity-70'
+          onClick={handleExportExcel}
+        >
+          <Typography className='text-xl font-semibold'>Xuất Excel</Typography>
+        </Button>
         <Button
           className='bg-primary-dark h-[60px] flex items-center justify-center border-2 border-white'
           onClick={handleFinish}

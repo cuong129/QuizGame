@@ -65,12 +65,11 @@ export default function Game() {
   useEffect(() => {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    console.log(urlParams.get('topicId'));
+    let id = urlParams.get('topicId');
     let newPlayers = urlParams.get('players')?.split(',');
     setPlayers(newPlayers.map((name) => ({ name, score: 0 })));
-    setQuestions(
-      ROUND2_QUESTIONS.sort((a, b) => ('' + a.type).localeCompare(b.type))
-    );
+    const mocks = id % 2 === 0 ? ROUND2_QUESTIONS : QUESTIONS;
+    setQuestions(mocks.sort((a, b) => ('' + a.type).localeCompare(b.type)));
     //setIsLoading(true);
     // TODO: fetch api get question by Topic id
     // (async () => {

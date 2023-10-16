@@ -40,4 +40,10 @@ public class QuestionController : ControllerBase
     {
         return await _questionService.ImportExcelData(excelFile);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IdentityResult> Delete(Guid id)
+    {
+        return await _questionService.Delete(id);
+    }
 }
