@@ -47,7 +47,7 @@ export default function TopicDetail({ topicId }) {
     setIsLoading(true);
     (async () => {
       try {
-        const response = await axios.get(ApiGetTopicById + topicId,);
+        const response = await axios.get(ApiGetTopicById + topicId);
         setData(response.data);
         console.log(response);
         setNotFound(response.data == null);
@@ -81,7 +81,6 @@ export default function TopicDetail({ topicId }) {
                   </span>
                 </li>
                 <li class='flex items-center font-sans text-sm font-normal leading-normal text-green-500 cursor-pointer'>
-                  {/* TODO: Topic name */}
                   {data?.topic?.name}
                 </li>
               </ol>
@@ -90,7 +89,9 @@ export default function TopicDetail({ topicId }) {
 
           <div className='flex flex-row justify-between'>
             <div className='flex mb-4'>
-              <Typography style={{ fontSize: 26 }}>{data?.topic?.name}</Typography>
+              <Typography style={{ fontSize: 26 }}>
+                {data?.topic?.name}
+              </Typography>
               <div className='flex items-center ml-4'>
                 <Chip
                   variant='outlined'
@@ -128,11 +129,13 @@ export default function TopicDetail({ topicId }) {
               </tr>
             </thead>
             <tbody>
-              {data?.questions?.length > 0 && data.questions.map(({ id, request, answer, schoolLevel, type}, index) => {
-                const isLast = index === data?.questions.length - 1;
-                const classes = isLast
-                  ? 'p-4'
-                  : 'p-4 border-b border-blue-gray-50';
+              {data?.questions?.length > 0 &&
+                data.questions.map(
+                  ({ id, request, answer, schoolLevel, type }, index) => {
+                    const isLast = index === data?.questions.length - 1;
+                    const classes = isLast
+                      ? 'p-4'
+                      : 'p-4 border-b border-blue-gray-50';
 
                 return (
                   <tr key={id}>

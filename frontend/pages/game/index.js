@@ -9,11 +9,18 @@ import ScoreDrawer from '@/components/ScoreDrawer';
 import DrawerButton from '@/components/DrawerButton';
 import MultipleChoiceQuestionWithImage from '@/components/MultipleChoiceQuestionWithImage';
 import Rule from '@/components/Rule';
+import RuleTwo from '@/components/RuleTwo';
+import RuleThree from '@/components/RuleThree';
+import { QUESTIONS, QUESTION_TYPE } from '@/utils/constants';
+import MultipleChoiceQuestion from '@/components/MultipleChoiceQuestion';
+import ScoreBoardScreen from '@/components/ScoreBoardScreen';
 
 export default function Game() {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [players, setPlayers] = useState([]);
+
+  const [questions, setQuestions] = useState([]);
 
   const [questionIndex, setQuestionIndex] = useState(0);
 
@@ -24,19 +31,40 @@ export default function Game() {
 
   const [answerClickCount, setAnswerClickCount] = useState(0);
 
-  const isDisabledMCAnswer = answerClickCount === 2;
-
   const [isShowAnswer, setIsShowAnswer] = useState(false);
 
+  const [isStar, setIsStar] = useState(false);
+
+  const [isDisabledCounter, setIsDisabledCounter] = useState(false);
+
+  const [isFinish, setIsFinish] = useState(false);
+
+  const isRoundOne =
+    questions?.length > 0 &&
+    questions[0]?.type === QUESTION_TYPE.MultipleChoice;
+
+  // TODO: full flow Round 2
+  const isRoundTwo =
+    questions?.length > 0 && questions[0]?.type === QUESTION_TYPE.Image;
+
+  const isSubQuestion = questionIndex >= 11;
+
+  const shouldShowTimer = isRoundOne && questionIndex < 8;
+
+  const hasLuckyStar = isRoundOne && questionIndex > 7;
+
+  const isDisabledMCAnswer = hasLuckyStar && answerClickCount === 2;
+
+  console.log(players);
   useEffect(() => {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
     console.log(urlParams.get('topicId'));
     let newPlayers = urlParams.get('players')?.split(',');
-    setPlayers(newPlayers);
-    console.log(newPlayers);
-    setIsLoading(true);
-    // TODO: fetch api create Topic
+    setPlayers(newPlayers.map((name) => ({ name, score: 0 })));
+    setQuestions(QUESTIONS);
+    //setIsLoading(true);
+    // TODO: fetch api get question by Topic id
     // (async () => {
     //   try {
     //     await new Promise((resolve, reject) => {
@@ -50,13 +78,38 @@ export default function Game() {
     // })();
   }, []);
 
+  useEffect(() => {
+    setIsCounting(false);
+    setAnswerClickCount(0);
+    setIsShowAnswer(false);
+    setTimerKey((prev) => prev + 1);
+    setIsStar(false);
+  }, [questionIndex]);
+
   const handleShowCorrectAnswer = () => {
     setIsShowAnswer(true);
   };
+
+  const handleGoNextQuestion = () => {
+    if (questionIndex === questions?.length - 1) {
+      return;
+    }
+    setQuestionIndex((prev) => prev + 1);
+  };
+
+  const setScore = (index) => (value) => {
+    const newPlayers = [...players];
+    newPlayers[index].score += value;
+    setPlayers(newPlayers);
+  };
+
+  //if (isLoading) return <h1>Loading...</h1>;
+  if (isFinish)
+    return <ScoreBoardScreen title='Tri thức an toàn' players={players} />;
   return (
     <>
       <div
-        className='w-screen h-screen flex flex-col items-center justify-center'
+        className='flex flex-col items-center justify-center w-screen h-screen'
         style={{
           backgroundImage: "url('/1.png')",
           backgroundSize: 'cover',
@@ -68,7 +121,7 @@ export default function Game() {
         {!isStartGame ? (
           // BẮT ĐẦU THI
           <>
-            <Rule />
+            <RuleThree />
             <Button
               className='bg-primary-dark h-[60px] flex items-center justify-center gap-3 w-60 !absolute right-[6.25vw] bottom-4 border-2 border-white'
               onClick={() => setIsStartGame(true)}
@@ -82,44 +135,64 @@ export default function Game() {
         ) : (
           // CÁC CÂU HỎI
           <>
-            <div className='absolute right-10 top-5 bg-[#EDECEC] rounded-full'>
-              <CountdownCircleTimer
-                isPlaying={isCounting}
-                key={timerKey}
-                duration={5}
-                colors={'#EC1C24'}
-                size={150}
-              >
-                {({ remainingTime }) => (
-                  <Typography className='text-5xl font-extrabold'>
-                    {remainingTime}
-                  </Typography>
-                )}
-              </CountdownCircleTimer>
-            </div>
+            {shouldShowTimer && (
+              <div className='absolute right-10 top-5 bg-[#EDECEC] rounded-full'>
+                <CountdownCircleTimer
+                  isPlaying={isCounting}
+                  key={timerKey}
+                  duration={5}
+                  colors={'#EC1C24'}
+                  size={150}
+                  onComplete={() => setIsCounting(false)}
+                >
+                  {({ remainingTime }) => (
+                    <Typography className='text-5xl font-extrabold'>
+                      {remainingTime}
+                    </Typography>
+                  )}
+                </CountdownCircleTimer>
+              </div>
+            )}
 
-            <MultipleChoiceQuestionWithImage
+            {isRoundOne && (
+              <MultipleChoiceQuestion
+                key={questionIndex}
+                index={questionIndex}
+                data={questions[questionIndex]}
+                hasLuckyStar={hasLuckyStar}
+                isDisabled={isDisabledMCAnswer}
+                onClickAnswer={() => setAnswerClickCount((prev) => prev + 1)}
+                isShowAnswer={isShowAnswer}
+                isSelectStar={isStar}
+                onToggleStar={() => setIsStar((prev) => !prev)}
+              />
+            )}
+
+            {/* <MultipleChoiceQuestionWithImage
               isDisabled={isDisabledMCAnswer}
               onClickAnswer={() => setAnswerClickCount((prev) => prev + 1)}
               isShowAnswer={isShowAnswer}
-            />
+            /> */}
             <div className='flex justify-between w-[87.5vw] absolute bottom-4'>
               <div className='flex gap-4'>
-                <Button
-                  className='bg-red-500 w-[150px] h-[60px] flex items-center justify-center border-2 border-white'
-                  onClick={() => {
-                    setTimerKey((prev) => prev + 1);
-                    if (!isCounting) {
-                      setIsCounting(true);
-                    } else {
-                      setIsCounting(false);
-                    }
-                  }}
-                >
-                  <Typography className='text-xl font-semibold'>
-                    {isCounting ? 'Dừng lại' : 'Bắt đầu'}
-                  </Typography>
-                </Button>
+                {shouldShowTimer && (
+                  <Button
+                    className='bg-red-500 w-[150px] h-[60px] flex items-center justify-center border-2 border-white'
+                    onClick={() => {
+                      setTimerKey((prev) => prev + 1);
+                      if (!isCounting) {
+                        setIsCounting(true);
+                      } else {
+                        setIsCounting(false);
+                      }
+                    }}
+                  >
+                    <Typography className='text-xl font-semibold'>
+                      {isCounting ? 'Dừng lại' : 'Bắt đầu'}
+                    </Typography>
+                  </Button>
+                )}
+
                 <Button
                   className='bg-primary h-[60px] flex items-center justify-center border-2 border-white'
                   onClick={handleShowCorrectAnswer}
@@ -129,22 +202,42 @@ export default function Game() {
                   </Typography>
                 </Button>
               </div>
-              <Button
-                className='bg-primary-dark h-[60px] flex items-center justify-center border-2 border-white'
-                onClick={() => {}}
-              >
-                <Typography className='text-xl font-semibold'>
-                  Câu kế tiếp
-                </Typography>
-                <ChevronDoubleRightIcon className='w-5 h-5 ml-2' />
-              </Button>
+              <div className='flex gap-4'>
+                {questionIndex < questions?.length - 1 && (
+                  <Button
+                    className='bg-primary-dark h-[60px] flex items-center justify-center border-2 border-white'
+                    onClick={handleGoNextQuestion}
+                  >
+                    <Typography className='text-xl font-semibold'>
+                      {isSubQuestion ? 'Câu hỏi phụ' : 'Câu kế tiếp'}
+                    </Typography>
+                    <ChevronDoubleRightIcon className='w-5 h-5 ml-2' />
+                  </Button>
+                )}
+                {questionIndex > 10 && (
+                  <Button
+                    className='bg-red-500 h-[60px] flex items-center justify-center border-2 border-white'
+                    onClick={() => setIsFinish(true)}
+                  >
+                    <Typography className='text-xl font-semibold'>
+                      Kết thúc
+                    </Typography>
+                  </Button>
+                )}
+              </div>
             </div>
           </>
         )}
-
         <DrawerButton onClick={() => setOpen(true)} />
       </div>
-      <ScoreDrawer open={open} onClose={() => setOpen(false)} />
+      <ScoreDrawer
+        players={players}
+        open={open}
+        onClose={() => setOpen(false)}
+        isDisabledCounter={isDisabledCounter}
+        isStar={isStar}
+        setScore={setScore}
+      />
     </>
   );
 }
