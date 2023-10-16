@@ -14,6 +14,7 @@ export default function ScoreDrawer({
   isDisabledCounter,
   isStar,
   setScore,
+  isHiddenSquareColumn,
 }) {
   const [isSubmitScore, setIsSubmitScore] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -29,10 +30,10 @@ export default function ScoreDrawer({
       className='bg-white flex flex-col items-center py-[10vh] px-[50px]'
       size={694}
     >
-      <Typography className='uppercase font-extrabold text-[40px]  text-primary-dark mb-[60px]'>
+      <Typography className='uppercase font-bold text-[40px]  text-primary-dark mb-[60px]'>
         Thống kê điểm thi
       </Typography>
-      <div className='w-full flex flex-col items-center'>
+      <div className='flex flex-col items-center w-full'>
         {players.map(({ name, score }, index) => (
           <ScoreField
             key={index}
@@ -42,12 +43,13 @@ export default function ScoreDrawer({
             isSubmit={isSubmitScore}
             isDisabledCounter={isDisabledCounter}
             isStar={isStar}
+            isHiddenSquareColumn={isHiddenSquareColumn}
           />
         ))}
       </div>
       {isDisabledCounter && (
         <Button
-          className='bg-primary-dark w-[160px] h-[60px] self-end align-bottom justify-end mt-[60px]'
+          className='bg-primary-dark w-[160px] !h-[60px] self-end  justify-end mt-[60px]'
           onClick={handleSubmit}
           disabled={isDisable}
         >
@@ -68,6 +70,7 @@ const ScoreField = ({
   isStar,
   score,
   setScore,
+  isHiddenSquareColumn,
 }) => {
   const [squares, setSquares] = useState(Array(5).fill(false));
   const [scoreSquares, setScoreSquares] = useState(Array(4).fill(false));
@@ -75,14 +78,20 @@ const ScoreField = ({
   const bonusScore = isStar ? 20 : 10;
 
   const [isCalculated, setIsCalculated] = useState(false);
-
   useEffect(() => {
     if (isSubmit && !isCalculated) {
       const index = scoreSquares.findIndex((x) => x);
       setScore(SCORE_BY_POSITION[index] ?? 0);
       setIsCalculated(true);
     }
-  }, [isSubmit, isCalculated, scoreSquares, setScore]);
+  }, [isSubmit, scoreSquares, isCalculated, setScore]);
+  // useEffect(() => {
+  //   if (isSubmit && !isCalculated) {
+  //     const index = scoreSquares.findIndex((x) => x);
+  //     setScore(SCORE_BY_POSITION[index] ?? 0);
+  //     setIsCalculated(true);
+  //   }
+  // }, [isSubmit, isCalculated, scoreSquares, setScore]);
 
   const onToggleSquare = (index) => {
     if (isSubmit) return;
@@ -105,7 +114,7 @@ const ScoreField = ({
         isDisabledCounter ? 'rounded-l-full' : 'rounded-full'
       )}
     >
-      <Typography className='text-[28px] font-extrabold my-[30px] ml-[150px]'>
+      <Typography className='text-[28px] font-bold my-[30px] ml-[150px]'>
         {name}
       </Typography>
       <div
@@ -121,13 +130,14 @@ const ScoreField = ({
       {isDisabledCounter ? (
         <div>
           <div className='absolute right-[2px] top-1/2 -translate-y-1/2 flex flex-col'>
-            {squares.map((value, index) => (
-              <Square
-                key={index}
-                isCheck={value}
-                onToggle={() => onToggleSquare(index)}
-              />
-            ))}
+            {!isHiddenSquareColumn &&
+              squares.map((value, index) => (
+                <Square
+                  key={index}
+                  isCheck={value}
+                  onToggle={() => onToggleSquare(index)}
+                />
+              ))}
           </div>
           <div className='absolute bottom-[-3px] translate-y-full left-[150px] flex'>
             {scoreSquares.map((value, index) => (

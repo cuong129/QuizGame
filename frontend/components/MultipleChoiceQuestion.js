@@ -30,7 +30,7 @@ const MultipleChoiceQuestion = ({
         </div>
         {hasLuckyStar && (
           <div
-            className='absolute bottom-3 right-3 cursor-pointer'
+            className='absolute cursor-pointer bottom-3 right-3'
             onClick={onToggleStar}
           >
             <i
@@ -42,7 +42,7 @@ const MultipleChoiceQuestion = ({
           </div>
         )}
         <div className='flex flex-col justify-center h-full'>
-          <Typography className='font-extrabold text-center text-[38px]'>
+          <Typography className='font-bold text-center text-[38px]'>
             {request}
           </Typography>
         </div>

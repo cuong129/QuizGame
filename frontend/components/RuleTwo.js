@@ -2,11 +2,11 @@ import { Typography } from '@material-tailwind/react';
 
 const RuleTwo = () => {
   return (
-    <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[65vh] mt-[10vh] shadow px-[100px]'>
-      <Typography className='text-primary-1 text-[40px] text-center font-extrabold uppercase mb-8'>
+    <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[45vh] shadow px-[100px]'>
+      <Typography className='text-primary-1 text-[40px] text-center font-bold uppercase mb-8'>
         Phong cách giao thông
       </Typography>
-      <div className='overflow-auto h-full'>
+      <div className='h-full overflow-auto'>
         <Typography className='text-[32px] font-semibold text-justify'>
           Các đội thi tự chuẩn bị tên và giới thiệu về tên đội thi của mình
           trong vòng 02 phút sao cho có ý nghĩa và thể được tinh thần của đội.

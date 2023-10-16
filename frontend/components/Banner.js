@@ -12,7 +12,7 @@ export default function Banner({ title }) {
       }}
     >
       <div>
-        <Typography className='font-extrabold text-[42px] text-white'>
+        <Typography className='font-bold text-[42px] text-white'>
           HÀNH TRÌNH VĂN MINH
         </Typography>
         <Typography className='text-[22px] text-white uppercase'>
