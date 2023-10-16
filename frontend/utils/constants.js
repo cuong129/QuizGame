@@ -11,6 +11,7 @@ export const MC_ANSWERS = [
 
 export const QUESTION_TYPE = {
   MultipleChoice: 'TracNghiem',
+  Image: 'BienBao',
 };
 
 export const QUESTION = {

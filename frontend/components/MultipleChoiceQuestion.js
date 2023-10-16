@@ -30,7 +30,7 @@ const MultipleChoiceQuestion = ({
         </div>
         {hasLuckyStar && (
           <div
-            className='absolute bottom-3 right-3 cursor-pointer'
+            className='absolute cursor-pointer bottom-3 right-3'
             onClick={onToggleStar}
           >
             <i
@@ -51,7 +51,7 @@ const MultipleChoiceQuestion = ({
         {choices.map((item, index) =>
           !hasLuckyStar ? (
             <MCAnswer
-              key={item}
+              key={item + index}
               text={item}
               label={MC_LABELS[index]}
               answerLabel={correctAnswer}
@@ -59,7 +59,7 @@ const MultipleChoiceQuestion = ({
             />
           ) : (
             <ClickableMCAnswer
-              key={item}
+              key={item + index}
               text={item}
               label={MC_LABELS[index]}
               answerLabel={correctAnswer}

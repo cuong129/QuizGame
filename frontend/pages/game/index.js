@@ -43,6 +43,10 @@ export default function Game() {
     questions?.length > 0 &&
     questions[0]?.type === QUESTION_TYPE.MultipleChoice;
 
+  // TODO: full flow Round 2
+  const isRoundTwo =
+    questions?.length > 0 && questions[0]?.type === QUESTION_TYPE.Image;
+
   const isSubQuestion = questionIndex >= 11;
 
   const shouldShowTimer = isRoundOne && questionIndex < 8;
@@ -88,7 +92,7 @@ export default function Game() {
 
   const handleGoNextQuestion = () => {
     if (questionIndex === questions?.length - 1) {
-      // TODO: finish round
+      return;
     }
     setQuestionIndex((prev) => prev + 1);
   };
@@ -105,7 +109,7 @@ export default function Game() {
   return (
     <>
       <div
-        className='w-screen h-screen flex flex-col items-center justify-center'
+        className='flex flex-col items-center justify-center w-screen h-screen'
         style={{
           backgroundImage: "url('/1.png')",
           backgroundSize: 'cover',
