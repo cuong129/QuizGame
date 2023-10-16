@@ -10,6 +10,7 @@ public interface ITopicService
     Task<List<Topic>> GetAll();
     Task<TopicQuestionDto> GetTopicById(Guid topicId);
     Task<List<Question>> RandomQuestionTopic(Guid topicId, int numberQuestion);
-    Task<List<Question>> AddListQuestionToTopic(Guid topicId, List<Guid> questions);
+    Task<List<Question>> AddListQuestionToTopic(TopicQuestionCreateDto topicQuestionCreateDto);
     Task<IdentityResult> RemoveQuestionToTopic(Guid questionId);
+    Task<IdentityResult> Delete(Guid id);
 }

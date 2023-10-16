@@ -16,6 +16,25 @@ public class QuestionService : IQuestionService
         _dbContext = dbContext;
     }
 
+    public async Task<IdentityResult> Delete(Guid id)
+    {
+        try
+        {
+            var question = await _dbContext.Questions.SingleOrDefaultAsync(x=> x.Id == id);
+            _dbContext.Questions.Remove(question);
+            await _dbContext.SaveChangesAsync();
+
+            return IdentityResult.Success; 
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError
+            {
+                Description = ex.Message
+            });
+        }
+    }
+
     public async Task<List<Question>> GetAll()
     {
         try
@@ -78,10 +97,12 @@ public class QuestionService : IQuestionService
                         {
                             var question = new Question
                             {
-                                Request = reader.GetString(1),
-                                Answer = reader.GetString(2),
-                                Type = reader.GetString(3),
-                                SchoolLevel = reader.GetString(4),
+                                Request = reader.GetString(0),
+                                Answer = reader.GetString(1),
+                                Type = reader.GetString(2),
+                                SchoolLevel = reader.GetString(3),
+                                CorrectAnswer = reader.GetString(4),
+                                AttachmentUrl = reader.GetString(5),
                             };
                             await _dbContext.Questions.AddAsync(question);
                             await _dbContext.SaveChangesAsync();

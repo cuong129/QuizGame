@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from "react";
 import DashboardLayout from '@/layouts/DashboardLayout';
+import { ApiDeleteQuestion, ApiGetAllQuestion, ApiRemoveQuestion } from '@/utils/endpoints';
 import {
   Typography,
   IconButton,
@@ -7,38 +9,16 @@ import {
 } from '@material-tailwind/react';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Employed', ''];
+import axios from 'axios';
 
-const TABLE_ROWS = [
-  {
-    name: 'John Michael',
-    job: 'Manager',
-    date: '23/04/18',
-  },
-  {
-    name: 'Alexa Liras',
-    job: 'Developer',
-    date: '23/04/18',
-  },
-  {
-    name: 'Laurent Perrier',
-    job: 'Executive',
-    date: '19/09/17',
-  },
-  {
-    name: 'Michael Levi',
-    job: 'Developer',
-    date: '24/12/08',
-  },
-  {
-    name: 'Richard Gran',
-    job: 'Manager',
-    date: '04/10/21',
-  },
-];
+
+const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Loại câu hỏi', 'Cấp bậc', 'Tệp đính kèm', ''];
 
 export default function Dashboard() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState();
+
   const handleDownloadTemplate = () => {
     router.push('/template.csv');
   };
@@ -46,6 +26,23 @@ export default function Dashboard() {
     // TODO: Upload to server
     console.log('selectedFile', event.target.files[0]);
   };
+
+  const handleRemoveQuestion = (id) => {
+    axios.delete(ApiRemoveQuestion + id)
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      try {
+        const response = await axios.get(ApiGetAllQuestion);
+        setData(response?.data);
+        console.log(response);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
   return (
     <DashboardLayout>
       <div className='flex flex-row justify-between'>
@@ -89,19 +86,19 @@ export default function Dashboard() {
           </tr>
         </thead>
         <tbody>
-          {TABLE_ROWS.map(({ name, job, date }, index) => {
-            const isLast = index === TABLE_ROWS.length - 1;
+          {data?.length > 0 && data.map(({ id, request, answer, type, schoolLevel, attachmentUrl }, index) => {
+            const isLast = index === data.length - 1;
             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
             return (
-              <tr key={name}>
+              <tr key={id}>
                 <td className={classes}>
                   <Typography
                     variant='small'
                     color='blue-gray'
                     className='font-normal'
                   >
-                    {name}
+                    {request}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -110,7 +107,7 @@ export default function Dashboard() {
                     color='blue-gray'
                     className='font-normal'
                   >
-                    {job}
+                    {answer}
                   </Typography>
                 </td>
                 <td className={classes}>
@@ -119,10 +116,28 @@ export default function Dashboard() {
                     color='blue-gray'
                     className='font-normal'
                   >
-                    {date}
+                    {type}
                   </Typography>
                 </td>
-                <td className={classNames(classes, 'w-[50px]')}>
+                <td className={classes}>
+                  <Typography
+                    variant='small'
+                    color='blue-gray'
+                    className='font-normal'
+                  >
+                    {schoolLevel}
+                  </Typography>
+                </td>
+                <td className={classes}>
+                  <Typography
+                    variant='small'
+                    color='blue-gray'
+                    className='font-normal'
+                  >
+                    {attachmentUrl}
+                  </Typography>
+                </td>
+                <td className={classNames(classes, 'w-[50px]')} onClick={() => handleRemoveQuestion(id)}>
                   <IconButton variant='text' color='red'>
                     <i className='fas fa-trash' />
                   </IconButton>

@@ -14,29 +14,52 @@ import {
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { ApiCreateTopic } from '@/utils/endpoints';
+import Select from 'react-select';
+import { Alert } from "@material-tailwind/react";
+
+const TOPIC_TYPES = [
+  {
+    value: 'TracNghiem',
+    label: 'Trắc nghiệm',
+  },
+  {
+    value: 'HinhAnh',
+    label: 'Hình ảnh',
+  },
+  {
+    value: 'Video',
+    label: 'Video',
+  },
+];
+
 export function TopicDialog({ open, onClose }) {
   const [name, setName] = useState('');
   const [isPrimary, setIsPrimary] = useState(true);
   const [isRandom, setIsRandom] = useState(false);
+  const [topicType, setTopicType] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleCreateTopic = async () => {
     setIsLoading(true);
-    // TODO: fetch api create Topic (isRandom flag)
     try {
       const response = await axios.post(ApiCreateTopic, {
         name,
         schoolLevel: isPrimary ? 'TH' : 'THCS',
+        type: topicType.value,
         isRandom
       });
-      if (response?.id) {
-        router.push(`/topic/${id}`);
+      if (response?.data?.id) {
+        router.push(`/topic/${response?.data?.id}`);
       }
-    } finally {
+      //router.reload();
+    } catch (e) {
+      
+    }
+    finally {
       setIsLoading(false);
-      handleOpen(false);
+      handleClose();
     }
   };
 
@@ -58,7 +81,7 @@ export function TopicDialog({ open, onClose }) {
             />
           </div>
           <div className='flex gap-10 items-center'>
-            <Typography>Loại bộ đề:</Typography>
+            <Typography>Cấp bậc:</Typography>
             <Radio
               name='type'
               label='Tiểu học'
@@ -75,11 +98,21 @@ export function TopicDialog({ open, onClose }) {
               onChange={() => setIsPrimary(false)}
             />
           </div>
+          <div className='my-4'>
+          <Select
+            className='basic-single'
+            
+            isSearchable
+            value={topicType}
+            options={TOPIC_TYPES}
+            placeholder='Chọn loại bộ đề'
+            onChange={(e) => setTopicType(e)}
+          />
+        </div>
           <Checkbox
             label={
               <span>
-                Tạo ngẫu nhiên bộ đề{' '}
-                <span className='font-bold'>Tri thức an toàn</span>
+                Tạo ngẫu nhiên bộ đề
               </span>
             }
             checked={isRandom}

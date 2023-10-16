@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Typography, Button, IconButton, Chip } from '@material-tailwind/react';
 import classNames from 'classnames';
 import { AddQuestionsDialog } from '@/components/AddQuestionsDialog';
-import { ApiGetTopicById } from '@/utils/endpoints';
+import { ApiRemoveQuestionTopic, ApiGetTopicById } from '@/utils/endpoints';
 import axios from 'axios';
 
 const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Cấp bậc', 'Loại câu hỏi', ''];
@@ -43,7 +43,6 @@ export default function TopicDetail({ topicId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState();
 
-
   useEffect(() => {
     setIsLoading(true);
     (async () => {
@@ -57,6 +56,11 @@ export default function TopicDetail({ topicId }) {
       }
     })();
   }, [topicId]);
+
+  const handleRemoveQuestionTopic = (id) => {
+    axios.delete(ApiRemoveQuestionTopic + "?questionId=" + id);
+    window.location.reload();
+  }
   return (
     <DashboardLayout>
       {isLoading ? (
@@ -168,7 +172,7 @@ export default function TopicDetail({ topicId }) {
                         {type}
                       </Typography>
                     </td>
-                    <td className={classNames(classes, 'w-[50px]')}>
+                    <td className={classNames(classes, 'w-[50px]')} onClick={() => handleRemoveQuestionTopic(id)}>
                       <IconButton variant='text' color='red'>
                         <i className='fas fa-trash' />
                       </IconButton>
@@ -180,7 +184,10 @@ export default function TopicDetail({ topicId }) {
           </table>
           <AddQuestionsDialog
             open={openDialog}
-            onClose={() => setOpenDialog(false)}
+            onClose={() => setOpenDialog(false)} 
+            topicId={data?.topic?.id}
+            schoolLevel={data?.topic?.schoolLevel}
+            type={data?.topic?.type}
           />
         </>
       )}

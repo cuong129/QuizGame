@@ -40,9 +40,9 @@ public class TopicController : ControllerBase
     }
 
     [HttpPost("create-question-topic")] 
-    public async Task<List<Question>> AddListQuestionToTopic(Guid topicId, [FromBody]List<Guid> questions)
+    public async Task<List<Question>> AddListQuestionToTopic([FromBody] TopicQuestionCreateDto topicQuestionCreateDto)
     {
-        return await _topicService.AddListQuestionToTopic(topicId, questions);
+        return await _topicService.AddListQuestionToTopic(topicQuestionCreateDto);
     }
 
     [HttpPost("random-question-topic")]
@@ -55,5 +55,11 @@ public class TopicController : ControllerBase
     public async Task<IdentityResult> RemoveQuestionToTopic(Guid questionId)
     {
         return await _topicService.RemoveQuestionToTopic(questionId);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IdentityResult> Delete(Guid id)
+    {
+        return await _topicService.Delete(id);
     }
 }

@@ -12,61 +12,32 @@ import {
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { ApiAddQuestionTopic, ApiGetAvailableQuestion } from '@/utils/endpoints';
+import axios from 'axios';
 
-const TABLE_HEAD = ['', 'Câu hỏi', 'Đáp án', 'Employed'];
+const TABLE_HEAD = ['','Câu hỏi', 'Đáp án', 'Loại câu hỏi', 'Tệp đính kèm'];
 
-const TABLE_ROWS = [
-  {
-    name: 'John Michael',
-    job: 'Manager',
-    date: '23/04/18',
-  },
-  {
-    name: 'Alexa Liras',
-    job: 'Developer',
-    date: '23/04/18',
-  },
-  {
-    name: 'Laurent Perrier',
-    job: 'Executive',
-    date: '19/09/17',
-  },
-  {
-    name: 'Michael Levi',
-    job: 'Developer',
-    date: '24/12/08',
-  },
-  {
-    name: 'Richard Gran',
-    job: 'Manager',
-    date: '04/10/21',
-  },
-  {
-    name: 'Richard Gran',
-    job: 'Manager',
-    date: '04/10/21',
-  },
-  {
-    name: 'Richard Gran',
-    job: 'Manager',
-    date: '04/10/21',
-  },
-  {
-    name: 'Richard Gran',
-    job: 'Manager',
-    date: '04/10/21',
-  },
-];
+export function AddQuestionsDialog({ open, onClose, topicId, schoolLevel, type }) {
+  const router = useRouter();
+  const [data, setData] = useState();
 
-const DEFAULT_CHECKEDLIST = [].fill(false, 0, TABLE_ROWS.length);
-
-export function AddQuestionsDialog({ open, onClose }) {
-  const [checkedList, setCheckedList] = useState(DEFAULT_CHECKEDLIST);
-
+  const [checkedList, setCheckedList] = useState([]);
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      try {
+        const response = await axios.get(ApiGetAvailableQuestion + '?schoolLevel=' + schoolLevel + '&type=' + type);
+        setData(response?.data);
+        setCheckedList(Array(response?.data?.length).fill(false))
+        console.log("avaliable question", response);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
   const checkedCount = checkedList.filter((x) => x).length;
 
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSelectQuestion = (index) => {
     let newCheckedList = [...checkedList];
@@ -76,30 +47,37 @@ export function AddQuestionsDialog({ open, onClose }) {
 
   const handleCreateTopic = async () => {
     setIsLoading(true);
+    let ids = [];
+    data?.forEach((value, index) => {
+      if (checkedList[index]) {
+        ids.push(value.id);
+      }
+    })
     // TODO: fetch api create Topic
     try {
-      const response = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(true);
-        }, 1000);
+      await axios.post(ApiAddQuestionTopic,{
+        topicId,
+        questionIds: ids
       });
     } finally {
       setIsLoading(false);
-      handleOpen(false);
-      router.push('/topic/test-123443');
+      handleClose();
+      router.reload();
+      //router.push('/topic/test-123443');
     }
   };
   const handleClose = () => {
     onClose(false);
-    setCheckedList(DEFAULT_CHECKEDLIST);
+    setCheckedList([]);
   };
+
   return (
     <Dialog open={open} size='lg' handler={handleClose}>
       <DialogHeader className='text-lg'>Thêm câu hỏi</DialogHeader>
       <DialogBody divider>
         <Typography className='mb-3'>
           Đã chọn <span className='font-bold'>{checkedCount}</span> câu hỏi
-          trong tổng số <span className='font-bold'>{TABLE_ROWS.length}</span>{' '}
+          trong tổng số <span className='font-bold'>{data?.length}</span>{' '}
           câu hỏi hiện có
         </Typography>
         <div className='max-h-[30rem] overflow-scroll'>
@@ -123,14 +101,14 @@ export function AddQuestionsDialog({ open, onClose }) {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROWS.map(({ name, job, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+              {data?.map(({ id, request, answer, type, attachmentUrl }, index) => {
+                const isLast = index === data.length - 1;
                 const classes = isLast
                   ? 'p-4'
                   : 'p-4 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={name}>
+                  <tr key={id}>
                     <td className={classNames(classes, 'w-[50px]')}>
                       <Checkbox
                         checked={checkedList[index]}
@@ -143,7 +121,7 @@ export function AddQuestionsDialog({ open, onClose }) {
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {name}
+                        {request}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -152,7 +130,7 @@ export function AddQuestionsDialog({ open, onClose }) {
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {job}
+                        {answer}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -161,7 +139,16 @@ export function AddQuestionsDialog({ open, onClose }) {
                         color='blue-gray'
                         className='font-normal'
                       >
-                        {date}
+                        {type}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {attachmentUrl}
                       </Typography>
                     </td>
                   </tr>

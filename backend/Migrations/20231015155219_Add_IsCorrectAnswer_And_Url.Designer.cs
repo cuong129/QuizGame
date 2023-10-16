@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QuizGame.Data;
@@ -11,9 +12,11 @@ using QuizGame.Data;
 namespace QuizGame.Migrations
 {
     [DbContext(typeof(QuizGameDbContext))]
-    partial class QuizGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231015155219_Add_IsCorrectAnswer_And_Url")]
+    partial class Add_IsCorrectAnswer_And_Url
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +234,7 @@ namespace QuizGame.Migrations
                     b.Property<string>("AttachmentUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("CorrectAnswer")
+                    b.Property<string>("IsCorrectAnswer")
                         .HasColumnType("text");
 
                     b.Property<string>("Request")
@@ -261,10 +264,6 @@ namespace QuizGame.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SchoolLevel")
                         .IsRequired()
                         .HasColumnType("text");
 
