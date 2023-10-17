@@ -18,6 +18,8 @@ export const ApiGetAvailableQuestion = 'Question/get-avaliable';
 
 export const ApiRemoveQuestion = 'Question/';
 
+export const ApiImportQuestion = 'Question/question-import';
+
 
 
 

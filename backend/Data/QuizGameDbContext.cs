@@ -26,9 +26,6 @@ public class QuizGameDbContext : IdentityDbContext
             .Property(p => p.Request)
             .IsRequired();
         modelBuilder.Entity<Question>()
-            .Property(p => p.Answer)
-            .IsRequired();
-        modelBuilder.Entity<Question>()
             .Property(p => p.Type)
             .IsRequired();
         modelBuilder.Entity<Question>()

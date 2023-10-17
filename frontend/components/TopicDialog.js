@@ -15,21 +15,16 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { ApiCreateTopic } from '@/utils/endpoints';
 import Select from 'react-select';
-import { Alert } from "@material-tailwind/react";
 
 const TOPIC_TYPES = [
   {
-    value: 'TracNghiem',
-    label: 'Trắc nghiệm',
+    value: 'Vong1',
+    label: 'Vòng 1',
   },
   {
-    value: 'HinhAnh',
-    label: 'Hình ảnh',
-  },
-  {
-    value: 'Video',
-    label: 'Video',
-  },
+    value: 'Vong2',
+    label: 'Vòng 2',
+  }
 ];
 
 export function TopicDialog({ open, onClose }) {

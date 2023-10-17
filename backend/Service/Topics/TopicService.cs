@@ -52,28 +52,55 @@ public class TopicService : ITopicService
 
             if (topicCreateDto.IsRandom)
             {
-                var questions = await _dbContext.Questions
+                if (topicCreateDto.Type == "Vong1") 
+                {
+                    var questions = await _dbContext.Questions
                     .Where(x => x.TopicId == null && x.SchoolLevel == topicCreateDto.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.TracNghiem))
                     .ToListAsync();
 
-                var random = new Random();
+                    var random = new Random();
 
-                var result = new List<Question>();
+                    var result = new List<Question>();
 
-                var numberQuestion = 12;
+                    var numberQuestion = 12;
 
-                for (int i = 0; i < numberQuestion; i++)
+                    for (int i = 0; i < numberQuestion; i++)
+                    {
+                        int randomIndex = random.Next(questions.Count);
+
+                        if (!questions.Any())
+                            return null;
+
+                        questions[randomIndex].TopicId = topicEntity.Id;
+                        result.Add(questions[randomIndex]);
+                        questions.RemoveAt(randomIndex);
+                    }
+                    _dbContext.Questions.UpdateRange(result);
+                }
+                else
                 {
-                    int randomIndex = random.Next(questions.Count);
+                    var bienBaoQuestion = await _dbContext.Questions
+                    .Where(x => x.TopicId == null && x.SchoolLevel == topicCreateDto.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.BienBao))
+                    .Take(5)
+                    .ToListAsync();
 
-                    if (!questions.Any())
+                    var xuLyTinhHuongQuestion = await _dbContext.Questions
+                    .Where(x => x.TopicId == null && x.SchoolLevel == topicCreateDto.SchoolLevel && x.Type == FunctionCommon.GetEnumDescription(QuestionType.XuLyTinhHuong))
+                    .Take(1)
+                    .ToListAsync();
+                    if (bienBaoQuestion == null || xuLyTinhHuongQuestion == null)
                         return null;
 
-                    questions[randomIndex].TopicId = topicEntity.Id;
-                    result.Add(questions[randomIndex]);
-                    questions.RemoveAt(randomIndex);
+                    var result = new List<Question>();
+                    bienBaoQuestion = bienBaoQuestion.Union(xuLyTinhHuongQuestion).ToList();
+                    
+                    foreach(var question in bienBaoQuestion)
+                    {
+                        question.TopicId = topicEntity.Id;
+                        result.Add(question);
+                    }
+                    _dbContext.Questions.UpdateRange(result);
                 }
-                _dbContext.Questions.UpdateRange(result);
             };
             await _dbContext.SaveChangesAsync();
 

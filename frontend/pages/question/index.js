@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { ApiDeleteQuestion, ApiGetAllQuestion, ApiRemoveQuestion } from '@/utils/endpoints';
+import { ApiImportQuestion, ApiGetAllQuestion, ApiRemoveQuestion } from '@/utils/endpoints';
 import {
   Typography,
   IconButton,
@@ -22,9 +22,16 @@ export default function Dashboard() {
   const handleDownloadTemplate = () => {
     router.push('/template.csv');
   };
-  const handleUploadFile = (event) => {
-    // TODO: Upload to server
-    console.log('selectedFile', event.target.files[0]);
+  const handleUploadFile = async (event) => {
+    const excelFile = new FormData();
+    excelFile.append("excelFile", event.target.files[0]);
+    setIsLoading(true);
+    try {
+      await axios.post(ApiImportQuestion, excelFile);
+    } finally {
+      setIsLoading(false);
+      router.reload();
+    }
   };
 
   const handleRemoveQuestion = (id) => {
@@ -55,7 +62,6 @@ export default function Dashboard() {
               Upload câu hỏi
               <input
                 type='file'
-                accept='.csv'
                 className='hidden'
                 onChange={handleUploadFile}
               />

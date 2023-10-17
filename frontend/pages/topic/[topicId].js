@@ -7,7 +7,7 @@ import { AddQuestionsDialog } from '@/components/AddQuestionsDialog';
 import { ApiRemoveQuestionTopic, ApiGetTopicById } from '@/utils/endpoints';
 import axios from 'axios';
 
-const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Cấp bậc', 'Loại câu hỏi', ''];
+const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Cấp bậc', 'Loại câu hỏi', 'Tệp đính kèm', ''];
 
 const TABLE_ROWS = [
   {
@@ -131,7 +131,7 @@ export default function TopicDetail({ topicId }) {
             <tbody>
               {data?.questions?.length > 0 &&
                 data.questions.map(
-                  ({ id, request, answer, schoolLevel, type }, index) => {
+                  ({ id, request, answer, schoolLevel, type, attachmentUrl }, index) => {
                     const isLast = index === data?.questions.length - 1;
                     const classes = isLast
                       ? 'p-4'
@@ -173,6 +173,15 @@ export default function TopicDetail({ topicId }) {
                         className='font-normal'
                       >
                         {type}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {attachmentUrl}
                       </Typography>
                     </td>
                     <td className={classNames(classes, 'w-[50px]')} onClick={() => handleRemoveQuestionTopic(id)}>

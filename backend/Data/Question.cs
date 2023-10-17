@@ -6,7 +6,7 @@ public class Question
 
     public Guid Id { get; set; }
     public string Request { get; set; }
-    public string Answer { get; set; }
+    public string? Answer { get; set; }
     public string? AttachmentUrl { get; set; }
     public string? CorrectAnswer { get; set; }
     public string Type { get; set; }
