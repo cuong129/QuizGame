@@ -11,7 +11,8 @@ export const MC_ANSWERS = [
 
 export const QUESTION_TYPE = {
   MultipleChoice: 'TracNghiem',
-  Image: 'BienBao',
+  Image: 'HinhAnh',
+  Video: 'Video',
 };
 
 export const QUESTION = {
@@ -44,8 +45,22 @@ const generateQuestions = (number) => {
   return result;
 };
 
-const generateChoices = () => {
-  const total = Math.floor(Math.random() * 2) + 3;
+const generateImageQuestions = (number, type) => {
+  let result = [];
+  for (let i = 0; i < number; i++) {
+    result.push({
+      request: getRandomSentence(),
+      answer: generateChoices(true),
+      correctAnswer: MC_LABELS[Math.floor(Math.random() * 3)],
+      type,
+      schoolLevel: 'TH',
+    });
+  }
+  return result;
+};
+
+const generateChoices = (isImage = false) => {
+  const total = isImage ? 4 : Math.floor(Math.random() * 2) + 3;
   let result = '';
   for (let i = 0; i < total; i++) {
     result += MC_LABELS[i] + '. ' + getRandomSentence() + ' ';
@@ -54,3 +69,15 @@ const generateChoices = () => {
 };
 
 export const QUESTIONS = [QUESTION, ...generateQuestions(14)];
+
+export const ROUND2_QUESTIONS = [
+  ...generateImageQuestions(5, QUESTION_TYPE.Image),
+  ...generateImageQuestions(4, QUESTION_TYPE.Video),
+];
+
+export const VIDEO_URLS = [
+  'https://www.youtube.com/watch?v=ixNLxzcfnbk',
+  'https://www.youtube.com/watch?v=ixNLxzcfnbk',
+  'https://www.youtube.com/watch?v=ixNLxzcfnbk',
+  'https://www.youtube.com/watch?v=ixNLxzcfnbk',
+];

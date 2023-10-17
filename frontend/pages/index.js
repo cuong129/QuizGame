@@ -14,16 +14,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 const TOPICS = [
   {
-    value: '123123',
-    label: 'Bộ đề 1',
+    value: '1',
+    label: 'Bộ đề vòng 1',
   },
   {
-    value: '1231237657',
-    label: 'Bộ đề 2',
-  },
-  {
-    value: '76867',
-    label: 'Bộ đề 3',
+    value: '2',
+    label: 'Bộ đề vòng 2',
   },
 ];
 
@@ -73,7 +69,7 @@ export default function Home() {
 
   return (
     <div
-      className='w-screen h-screen flex justify-center'
+      className='flex justify-center w-screen h-screen'
       style={{
         backgroundImage: "url('/start.png')",
         backgroundSize: 'cover',
@@ -83,7 +79,7 @@ export default function Home() {
     >
       <Banner title={'Thiết lập lượt chơi'} />
       <div className='w-[45vw] h-[65vh] bg-white rounded-[24px] border-[3px] border-primary p-12 relative mt-[221px]'>
-        <Typography className='text-xl font-semibold leading-6 mb-5'>
+        <Typography className='mb-5 text-xl font-semibold leading-6'>
           CHỌN BỘ ĐỀ
         </Typography>
         <div className='mb-10'>
@@ -98,7 +94,7 @@ export default function Home() {
             styles={customStyles}
           />
         </div>
-        <Typography className='text-xl font-semibold leading-6 mb-5'>
+        <Typography className='mb-5 text-xl font-semibold leading-6'>
           THÊM ĐỘI CHƠI
         </Typography>
         <div className='relative flex w-full mb-4'>
@@ -135,7 +131,7 @@ export default function Home() {
                   mount: { y: 0 },
                   unmount: { y: 50 },
                 }}
-                className='rounded-full normal-case text-base'
+                className='text-base normal-case rounded-full'
                 color='blue'
               />
             ))}

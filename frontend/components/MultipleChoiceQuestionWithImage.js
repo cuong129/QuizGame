@@ -1,7 +1,7 @@
 import ClickableMCAnswer from './ClickableMCAnswer';
 import { Typography } from '@material-tailwind/react';
 import { MC_LABELS } from '@/utils/constants';
-
+import { getChoicesByAnswer } from '@/utils/utilities';
 const DEFAULT_IMAGE_URL =
   'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80';
 
@@ -32,7 +32,7 @@ const MultipleChoiceQuestionWithImage = ({
             alt='image'
             src={url}
           />
-          <Typography className='font-extrabold text-center text-[38px] mt-4'>
+          <Typography className='font-bold text-center text-[38px] mt-4'>
             {request}
           </Typography>
         </div>

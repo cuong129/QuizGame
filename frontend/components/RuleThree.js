@@ -4,7 +4,7 @@ import ChildrenImage from '../public/4.png';
 const RuleThree = () => {
   return (
     <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[65vh] mt-[10vh] shadow px-[100px]'>
-      <Typography className='text-primary-1 text-[40px] text-center font-extrabold uppercase mb-8'>
+      <Typography className='text-primary-1 text-[40px] text-center font-bold uppercase mb-8'>
         Giao thông khoẻ
       </Typography>
       <div className='overflow-auto h-full'>

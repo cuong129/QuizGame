@@ -42,7 +42,7 @@ const MultipleChoiceQuestion = ({
           </div>
         )}
         <div className='flex flex-col justify-center h-full'>
-          <Typography className='font-extrabold text-center text-[38px]'>
+          <Typography className='font-bold text-center text-[38px]'>
             {request}
           </Typography>
         </div>
