@@ -18,7 +18,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder =>
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
-    .AllowAnyHeader());
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 });
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
