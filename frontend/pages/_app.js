@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import https from 'https';
 
-axios.defaults.baseURL = 'https://localhost:7255/api/';
+axios.defaults.baseURL = 'http://pdcuong.com:7255/api/';
 /**
  * Disable SSL
  */
