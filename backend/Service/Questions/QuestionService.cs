@@ -53,8 +53,9 @@ public class QuestionService : IQuestionService
     {
         try
         {
+            var questionType = type == "Vong1" ? "TracNghiem" : "BienBao";
             var result = await _dbContext.Questions
-                .Where(x => x.SchoolLevel == schoolLevel && x.Type == type && x.TopicId == null).ToListAsync();
+                .Where(x => x.SchoolLevel == schoolLevel && x.Type == questionType && x.TopicId == null).ToListAsync();
             return result;
         }
         catch (Exception)
