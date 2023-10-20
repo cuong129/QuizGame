@@ -10,16 +10,14 @@ import axios from 'axios';
 import https from 'https';
 import Head from 'next/head';
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+var rootCas = require('ssl-root-cas/latest').create();
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 /*
  * Disable SSL
  */
 const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-  requestCert: false,
-  agent: false,
+  ca: rootCas,
 });
 axios.defaults.httpsAgent = httpsAgent;
 
