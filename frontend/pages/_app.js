@@ -9,6 +9,9 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import https from 'https';
 import Head from 'next/head';
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 /*
  * Disable SSL
