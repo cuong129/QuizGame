@@ -8,8 +8,8 @@ import AuthRequired from '@/components/AuthRequired';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import https from 'https';
-
-axios.defaults.baseURL = 'https://localhost:7255/api/';
+import Head from 'next/head';
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 /*
  * Disable SSL
  */
@@ -31,6 +31,9 @@ export default function App({ Component, pageProps }) {
             <Component {...pageProps} />
           </AuthRequired>
         )} */}
+        <Head>
+          <title>Hành Trình Văn Minh</title>
+        </Head>
         <Component {...pageProps} />
       </PersistGate>
     </Provider>
