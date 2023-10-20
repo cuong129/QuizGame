@@ -10,14 +10,13 @@ import axios from 'axios';
 import https from 'https';
 import Head from 'next/head';
 
-var rootCas = require('ssl-root-cas/latest').create();
-
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 /*
  * Disable SSL
  */
+const CA = '-----BEGIN CERTIFICATE-----$$$$$-----END CERTIFICATE-----';
 const httpsAgent = new https.Agent({
-  ca: rootCas,
+  ca: CA,
 });
 axios.defaults.httpsAgent = httpsAgent;
 
