@@ -36,7 +36,7 @@ public class QuestionController : ControllerBase
     }
 
     [HttpPost("question-import")]
-    public async Task<IdentityResult> ImportExcel([FromForm] IFormFile excelFile)
+    public async Task<IdentityResult> ImportExcel(IFormFile excelFile)
     {
         return await _questionService.ImportExcelData(excelFile);
     }
