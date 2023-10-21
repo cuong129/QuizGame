@@ -20,9 +20,12 @@ import {
 import MultipleChoiceQuestion from '@/components/MultipleChoiceQuestion';
 import ScoreBoardScreen from '@/components/ScoreBoardScreen';
 import SituationCard from '@/components/SituationCard';
+import axios from 'axios';
+import { ApiGetTopicById } from '@/utils/endpoints';
 
 export default function Game() {
   const [isLoading, setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const [open, setOpen] = useState(false);
   const [players, setPlayers] = useState([]);
 
@@ -59,30 +62,29 @@ export default function Game() {
   const shouldShowTimer =
     (isRoundOne && questionIndex < 8) || (!isRoundOne && stage < 2);
 
-  const hasLuckyStar = isRoundOne && questionIndex > 7;
+  const hasLuckyStar = isRoundOne && questionIndex > 7 && questionIndex < 12;
 
   const isDisabledMCAnswer = answerClickCount === 2;
   useEffect(() => {
+    setIsLoading(true);
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let id = urlParams.get('topicId');
+    let topicId = urlParams.get('topicId');
     let newPlayers = urlParams.get('players')?.split(',');
     setPlayers(newPlayers.map((name) => ({ name, score: 0 })));
-    const mocks = id % 2 === 0 ? ROUND2_QUESTIONS : QUESTIONS;
-    setQuestions(mocks.sort((a, b) => ('' + a.type).localeCompare(b.type)));
-    //setIsLoading(true);
-    // TODO: fetch api get question by Topic id
-    // (async () => {
-    //   try {
-    //     await new Promise((resolve, reject) => {
-    //       setTimeout(() => {
-    //         resolve(true);
-    //       }, 1000);
-    //     });
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // })();
+    // const mocks = topicId % 2 === 0 ? ROUND2_QUESTIONS : QUESTIONS;
+
+    // setQuestions(mocks.sort((a, b) => ('' + a.type).localeCompare(b.type)));
+
+    (async () => {
+      try {
+        const response = await axios.get(ApiGetTopicById + topicId);
+        setQuestions(response.data.questions);
+        setNotFound(response.data == null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   const handleShowCorrectAnswer = () => {
@@ -117,6 +119,8 @@ export default function Game() {
   };
 
   //if (isLoading) return <h1>Loading...</h1>;
+  if (notFound) return <div>404 Not Found</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (isFinish)
     return <ScoreBoardScreen isRoundOne={isRoundOne} players={players} />;
   // ------ ROUND 1 ---------
@@ -423,7 +427,7 @@ export default function Game() {
 const TIMER_DURATION = [120, 10];
 const BANNER_TITLE = [
   'Phong cách giao thông',
-  'Tinh nhuệ giao thônng',
+  'Tinh nhuệ giao thông',
   'Giao thông khoẻ',
   'Văn minh giao thông',
   'Sắc màu giao thông',

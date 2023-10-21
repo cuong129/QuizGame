@@ -3,6 +3,7 @@ import {
   Typography,
   IconButton,
   Button,
+  Alert,
 } from '@material-tailwind/react';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
@@ -18,10 +19,23 @@ export default function ScoreDrawer({
 }) {
   const [isSubmitScore, setIsSubmitScore] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
+  const [selectedSquare, setSelectedSquare] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const handleSubmit = () => {
-    setIsSubmitScore(true);
-    setIsDisable(true);
+    if (selectedSquare.filter((x) => x).length === players.length) {
+      setIsSubmitScore(true);
+      setIsDisable(true);
+      setIsError(false);
+    } else {
+      setIsError(true);
+    }
+  };
+
+  const onClickScoreSquare = (index) => {
+    const newSelectedSquare = [...selectedSquare];
+    newSelectedSquare[index] = true;
+    setSelectedSquare(newSelectedSquare);
   };
   return (
     <Drawer
@@ -44,19 +58,27 @@ export default function ScoreDrawer({
             isDisabledCounter={isDisabledCounter}
             isStar={isStar}
             isHiddenSquareColumn={isHiddenSquareColumn}
+            onClickScoreSquare={() => onClickScoreSquare(index)}
           />
         ))}
       </div>
       {isDisabledCounter && (
-        <Button
-          className='bg-primary-dark w-[160px] !h-[60px] self-end  justify-end mt-[60px]'
-          onClick={handleSubmit}
-          disabled={isDisable}
-        >
-          <Typography className='text-[20px] font-semibold'>
-            Lưu điểm
-          </Typography>
-        </Button>
+        <div className='flex flex-col justify-between w-full h-full'>
+          <div className='h-[50px]'>
+            <Alert color='red' open={isError} onClose={() => setIsError(false)}>
+              Vui lòng chọn đủ thứ hạng trước khi Lưu điểm
+            </Alert>
+          </div>
+          <Button
+            className='bg-primary-dark w-[160px] !h-[60px] self-end  justify-end mt-[60px]'
+            onClick={handleSubmit}
+            disabled={isDisable}
+          >
+            <Typography className='text-[20px] font-semibold'>
+              Lưu điểm
+            </Typography>
+          </Button>
+        </div>
       )}
     </Drawer>
   );
@@ -71,6 +93,7 @@ const ScoreField = ({
   score,
   setScore,
   isHiddenSquareColumn,
+  onClickScoreSquare,
 }) => {
   const [squares, setSquares] = useState(Array(5).fill(false));
   const [scoreSquares, setScoreSquares] = useState(Array(4).fill(false));
@@ -85,13 +108,6 @@ const ScoreField = ({
       setIsCalculated(true);
     }
   }, [isSubmit, scoreSquares, isCalculated, setScore]);
-  // useEffect(() => {
-  //   if (isSubmit && !isCalculated) {
-  //     const index = scoreSquares.findIndex((x) => x);
-  //     setScore(SCORE_BY_POSITION[index] ?? 0);
-  //     setIsCalculated(true);
-  //   }
-  // }, [isSubmit, isCalculated, scoreSquares, setScore]);
 
   const onToggleSquare = (index) => {
     if (isSubmit) return;
@@ -105,6 +121,7 @@ const ScoreField = ({
     const newScoreSquares = Array(4).fill(false);
     newScoreSquares[index] = true;
     setScoreSquares(newScoreSquares);
+    onClickScoreSquare();
   };
 
   return (
@@ -163,7 +180,7 @@ const ScoreField = ({
             variant='text'
             className='opacity-30 hover:opacity-80'
             disabled={score === 0}
-            onClick={() => setScore(-10)}
+            onClick={() => setScore(-5)}
           >
             <i className='fa-solid fa-caret-down fa-3x'></i>
           </IconButton>

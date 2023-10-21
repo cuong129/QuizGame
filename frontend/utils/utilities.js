@@ -9,6 +9,17 @@ export function makeCustomHeaders() {
 }
 
 export const getChoicesByAnswer = (answer) => {
+  const choices = getChoices(answer);
+  const chars = [',', '.', ';'];
+  return choices.map((x) => {
+    if (chars.includes(x[x.length - 1])) {
+      return x.substring(0, x.length - 1);
+    }
+    return x;
+  });
+};
+
+const getChoices = (answer) => {
   const result = [];
   const indexB = answer.indexOf('B.');
   if (indexB !== -1) {

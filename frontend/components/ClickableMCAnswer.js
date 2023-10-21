@@ -26,14 +26,15 @@ const ClickableMCAnswer = ({
   return (
     <div
       className={classNames(
-        'rounded-full p-[18px] flex items-center border-[3px] w-full h-[14vh] cursor-pointer',
+        'rounded-3xl p-[18px] flex items-center border-[3px] w-full max-h-[20vh] cursor-pointer',
         isShowCorrectAnswer
           ? 'bg-success border-white'
           : isCorrectAnswer === null
           ? 'bg-white border-primary'
           : isCorrectAnswer
           ? 'bg-success border-white'
-          : 'bg-error border-white'
+          : 'bg-error border-white',
+        isImageQuestion ? 'h-full' : 'h-[20vh]'
       )}
       onClick={handleClickAnswer}
     >
@@ -64,7 +65,7 @@ const ClickableMCAnswer = ({
       </div>
       <Typography
         className={classNames(
-          'text-[28px] font-semibold whitespace-normal ml-[18px]',
+          'text-[27px] font-semibold whitespace-normal ml-[18px]',
           isImageQuestion ? 'max-w-[32vw]' : 'max-w-[33vw] text-center',
           (isCorrectAnswer !== null || isShowCorrectAnswer) && 'text-white'
         )}

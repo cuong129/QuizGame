@@ -2,9 +2,16 @@ import ClickableMCAnswer from './ClickableMCAnswer';
 import { Typography } from '@material-tailwind/react';
 import { MC_LABELS } from '@/utils/constants';
 import { getChoicesByAnswer } from '@/utils/utilities';
+import { useState } from 'react';
 const DEFAULT_IMAGE_URL =
-  'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80';
+  'https://drive.google.com/file/d/15uBqIbN0pEcATguVreRmIqLE2Etf_gg_/view?usp=share_link';
 
+const getImageURL = (url) => {
+  return url
+    .replace('file/d/', 'uc?export=view&id=')
+    .replace('/view?usp=share_link', '')
+    .replace('/view?usp=sharing', '');
+};
 const MultipleChoiceQuestionWithImage = ({
   index,
   data,
@@ -12,9 +19,10 @@ const MultipleChoiceQuestionWithImage = ({
   onClickAnswer,
   isShowAnswer,
 }) => {
-  const { request, answer, correctAnswer, imageURL } = data;
+  const { request, answer, correctAnswer, attachmentUrl } = data;
 
-  const url = imageURL ?? DEFAULT_IMAGE_URL;
+  const [isLoadingImg, setIsLoadingImg] = useState(true);
+  const url = getImageURL(attachmentUrl);
   const choices = getChoicesByAnswer(answer);
 
   return (
@@ -25,19 +33,23 @@ const MultipleChoiceQuestionWithImage = ({
             {`Câu ${(index + 1).toString().padStart(2, '0')}`}
           </Typography>
         </div>
-        <div className='flex flex-col h-full'>
+        <div className='relative flex flex-col h-full'>
+          {isLoadingImg && (
+            <div className='animate-pulse absolute mx-auto w-full h-[70%] rounded-xl bg-gray-300'></div>
+          )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className='mx-auto w-full h-[70%] rounded-xl'
             alt='image'
             src={url}
+            onLoad={() => setIsLoadingImg(false)}
           />
           <Typography className='font-bold text-center text-[38px] mt-4'>
             {request}
           </Typography>
         </div>
       </div>
-      <div className='flex flex-col justify-between w-1/2'>
+      <div className='flex flex-col w-1/2 gap-2'>
         {choices.map((item, index) => (
           <ClickableMCAnswer
             key={item + index}

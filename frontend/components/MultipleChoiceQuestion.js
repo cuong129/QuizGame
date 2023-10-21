@@ -47,7 +47,7 @@ const MultipleChoiceQuestion = ({
           </Typography>
         </div>
       </div>
-      <div className='mt-[68px] grid grid-cols-2 gap-8'>
+      <div className='mt-[50px] grid grid-cols-2 gap-8'>
         {choices.map((item, index) =>
           !hasLuckyStar ? (
             <MCAnswer

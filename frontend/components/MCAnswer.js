@@ -7,7 +7,7 @@ const MCAnswer = ({ text, label, answerLabel, isShowAnswer }) => {
   return (
     <div
       className={classNames(
-        'rounded-full p-[18px] flex items-center border-[3px] w-full h-[14vh]',
+        'rounded-3xl p-[18px] flex items-center border-[3px] w-full h-[20vh]',
         isCorrectAnswer ? 'bg-success border-white' : 'bg-white border-primary'
       )}
     >
@@ -28,7 +28,7 @@ const MCAnswer = ({ text, label, answerLabel, isShowAnswer }) => {
       </div>
       <Typography
         className={classNames(
-          'text-[28px] font-semibold whitespace-normal ml-[18px] max-w-[33vw] text-center',
+          'text-[27px] font-semibold whitespace-normal ml-[18px] max-w-[33vw] text-center',
           isCorrectAnswer && 'text-white'
         )}
       >

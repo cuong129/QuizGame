@@ -1,6 +1,5 @@
 import {
   Typography,
-  Option,
   Button,
   Input,
   IconButton,
@@ -11,17 +10,8 @@ import Select from 'react-select';
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Banner from '@/components/Banner';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-const TOPICS = [
-  {
-    value: '1',
-    label: 'Bộ đề vòng 1',
-  },
-  {
-    value: '2',
-    label: 'Bộ đề vòng 2',
-  },
-];
+import { ApiGetAllTopic } from '@/utils/endpoints';
+import axios from 'axios';
 
 const customStyles = {
   control: (base, state) => ({
@@ -33,12 +23,37 @@ const customStyles = {
 };
 
 export default function Home() {
+  const [availableTopics, setAvailableTopics] = useState([]);
   const [topic, setTopic] = useState(null);
   const [name, setName] = useState('');
   const [players, setPlayers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      try {
+        const response = await axios.get(ApiGetAllTopic);
+        if (response?.data?.length > 0) {
+          const topics = response.data
+            .sort(
+              (a, b) =>
+                ('' + a.type).localeCompare(b.type) ||
+                ('' + a.schoolLevel).localeCompare(b.schoolLevel)
+            )
+            .map(({ id, name }) => ({
+              value: id,
+              label: name,
+            }));
+          setAvailableTopics(topics);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
 
   const isExistPlayer = players.some((x) => x.trim() === name.trim());
 
@@ -88,7 +103,7 @@ export default function Home() {
             isLoading={isLoading}
             isSearchable
             value={topic}
-            options={TOPICS}
+            options={availableTopics}
             placeholder='Hãy chọn 1 bộ đề đã khởi tạo'
             onChange={(e) => setTopic(e)}
             styles={customStyles}
@@ -140,6 +155,7 @@ export default function Home() {
         <Button
           className='bg-primary-dark h-[60px] flex items-center justify-center gap-3 !absolute right-12 bottom-12 w-60'
           onClick={handleStartGame}
+          disabled={players.length === 0}
         >
           <Typography className='text-xl font-semibold'>
             BẮT ĐẦU CHƠI
