@@ -96,9 +96,10 @@ public class QuestionService : IQuestionService
 
                         if (rowNum >= 2)
                         {
+                            var request = reader.GetString(0).Split(": ");
                             var question = new Question
                             {
-                                Request = reader.GetString(0),
+                                Request = request.Length > 1 ? request[1] : request[0],
                                 Answer = reader.GetString(1),
                                 Type = reader.GetString(2),
                                 SchoolLevel = reader.GetString(3),
