@@ -59,7 +59,7 @@ export default function ScoreBoardScreen({ players, isRoundOne }) {
     <div
       className='relative flex flex-col items-center justify-center w-screen h-screen'
       style={{
-        backgroundImage: "url('/scoreboard.png')",
+        backgroundImage: "url('/scoreboard.jpeg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

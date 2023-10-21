@@ -1,6 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import ChildrenImage from '../public/4.png';
+import ChildrenImage from '../public/4.jpeg';
 const RuleThree = () => {
   return (
     <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[65vh] mt-[10vh] shadow px-[100px]'>

@@ -130,7 +130,7 @@ export default function Game() {
         <div
           className='flex flex-col items-center justify-center w-screen h-screen'
           style={{
-            backgroundImage: "url('/1.png')",
+            backgroundImage: "url('/1.jpeg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -266,7 +266,7 @@ export default function Game() {
       <div
         className='flex flex-col items-center justify-center w-screen h-screen'
         style={{
-          backgroundImage: "url('/1.png')",
+          backgroundImage: "url('/1.jpeg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
