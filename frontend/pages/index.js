@@ -84,7 +84,7 @@ export default function Home() {
 
   return (
     <div
-      className='flex justify-center w-screen h-screen'
+      className='relative flex justify-center w-screen h-screen'
       style={{
         backgroundImage: "url('/start.png')",
         backgroundSize: 'cover',
@@ -163,6 +163,12 @@ export default function Home() {
           <ChevronDoubleRightIcon className='w-5 h-5' />
         </Button>
       </div>
+      <Button
+        className='bg-primary-dark !opacity-40 hover:!opacity-100 h-[60px] flex items-center justify-center border-2 border-white !absolute bottom-4 left-8'
+        onClick={() => router.push('/ceremony')}
+      >
+        <Typography className='text-xl font-semibold'>Tổng kết</Typography>
+      </Button>
     </div>
   );
 }

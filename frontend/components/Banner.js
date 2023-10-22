@@ -1,6 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 
-export default function Banner({ title }) {
+export default function Banner({ title, header = 'Hành trình văn minh' }) {
   return (
     <div
       className='absolute top-7 w-[1000px] h-[104px]  flex justify-center items-center'
@@ -12,8 +12,8 @@ export default function Banner({ title }) {
       }}
     >
       <div>
-        <Typography className='font-bold text-[42px] text-white'>
-          HÀNH TRÌNH VĂN MINH
+        <Typography className='font-bold text-[42px] text-white uppercase'>
+          {header}
         </Typography>
         <Typography className='text-[22px] text-white uppercase'>
           {title}
