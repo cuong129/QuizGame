@@ -41,7 +41,7 @@ export default function ScoreDrawer({
     <Drawer
       open={open}
       onClose={onClose}
-      className='bg-white flex flex-col items-center p-[50px]'
+      className='bg-white flex flex-col items-center px-[50px] py-[25px]'
       size={750}
     >
       <Typography className='uppercase font-bold text-[40px] text-primary-dark mb-[60px]'>
@@ -70,7 +70,7 @@ export default function ScoreDrawer({
             </Alert>
           </div>
           <Button
-            className='bg-primary-dark w-[160px] !h-[60px] self-end justify-end mt-[25px]'
+            className='bg-primary-dark w-[160px] !h-[60px] self-end justify-end mt-[10px]'
             onClick={handleSubmit}
             disabled={isDisable}
           >
