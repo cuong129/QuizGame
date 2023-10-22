@@ -36,15 +36,12 @@ const ScoreLine = ({ index, name, score, isRoundOne }) => {
   );
 };
 
-export default function ScoreBoardScreen({ players, isRoundOne }) {
+export default function ScoreBoardScreen({ players, isRoundOne, stopMusic }) {
   const router = useRouter();
-  const [playFinish, { stop }] = useSound('ceremony.mp3');
-
-  playFinish();
 
   const handleFinish = () => {
     router.replace('/');
-    stop();
+    stopMusic();
   };
 
   const handleExportExcel = () => {

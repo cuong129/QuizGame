@@ -48,6 +48,7 @@ export default function Game() {
   const [playCorrect] = useSound('/correct.mp3');
   const [playStar] = useSound('star.mp3');
   const [playNext] = useSound('next.wav');
+  const [playFinish, finishProps] = useSound('ceremony.mp3');
 
   // --- ROUND 2 variables & functions ----
 
@@ -126,6 +127,7 @@ export default function Game() {
 
   const handleFinishTopic = () => {
     setIsFinish(true);
+    playFinish();
   };
 
   const setScore = (index) => (value) => {
@@ -138,7 +140,13 @@ export default function Game() {
   if (notFound) return <div>404 Not Found</div>;
   if (isLoading) return <div>Loading...</div>;
   if (isFinish)
-    return <ScoreBoardScreen isRoundOne={isRoundOne} players={players} />;
+    return (
+      <ScoreBoardScreen
+        isRoundOne={isRoundOne}
+        players={players}
+        stopMusic={finishProps.stop}
+      />
+    );
   // ------ ROUND 1 ---------
   if (isRoundOne)
     return (
