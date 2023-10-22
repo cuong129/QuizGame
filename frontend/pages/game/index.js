@@ -43,7 +43,11 @@ export default function Game() {
 
   const [isFinish, setIsFinish] = useState(false);
 
+  // SOUND
   const [play, { stop }] = useSound('/tick.mp3');
+  const [playCorrect] = useSound('/correct.mp3');
+  const [playStar] = useSound('star.mp3');
+  const [playNext] = useSound('next.wav');
 
   // --- ROUND 2 variables & functions ----
 
@@ -95,6 +99,7 @@ export default function Game() {
   }, [isCounting, stage]);
   const handleShowCorrectAnswer = () => {
     setIsShowAnswer(true);
+    playCorrect();
   };
 
   const resetState = () => {
@@ -103,6 +108,7 @@ export default function Game() {
     setIsShowAnswer(false);
     setTimerKey((prev) => prev + 1);
     setIsStar(false);
+    playNext();
   };
   const handleGoNextQuestion = () => {
     if (questionIndex === questions?.length - 1) {
@@ -116,6 +122,10 @@ export default function Game() {
     resetState();
     setStage(2);
     setScoreDrawerKey((prev) => prev + 1);
+  };
+
+  const handleFinishTopic = () => {
+    setIsFinish(true);
   };
 
   const setScore = (index) => (value) => {
@@ -149,7 +159,10 @@ export default function Game() {
               <Rule />
               <Button
                 className='bg-primary-dark h-[60px] flex items-center justify-center gap-3 w-60 !absolute right-[6.25vw] bottom-4 border-2 border-white'
-                onClick={() => setIsStartGame(true)}
+                onClick={() => {
+                  playNext();
+                  setIsStartGame(true);
+                }}
               >
                 <Typography className='text-xl font-semibold'>
                   BẮT ĐẦU THI
@@ -189,7 +202,12 @@ export default function Game() {
                   onClickAnswer={() => setAnswerClickCount((prev) => prev + 1)}
                   isShowAnswer={isShowAnswer}
                   isSelectStar={isStar}
-                  onToggleStar={() => setIsStar((prev) => !prev)}
+                  onToggleStar={() => {
+                    if (!isStar) {
+                      playStar();
+                    }
+                    setIsStar((prev) => !prev);
+                  }}
                 />
               )}
 
@@ -242,7 +260,7 @@ export default function Game() {
                   {questionIndex > 10 && (
                     <Button
                       className='bg-red-500 h-[60px] flex items-center justify-center border-2 border-white'
-                      onClick={() => setIsFinish(true)}
+                      onClick={handleFinishTopic}
                     >
                       <Typography className='text-xl font-semibold'>
                         Kết thúc
@@ -392,7 +410,7 @@ export default function Game() {
             </div>
             <Button
               className='!absolute bottom-4 right-[6.25vw] bg-red-500 h-[60px] flex items-center justify-center gap-3 w-100 border-2 border-white'
-              onClick={() => setIsFinish(true)}
+              onClick={handleFinishTopic}
             >
               <Typography className='text-xl font-semibold'>
                 Kết thúc

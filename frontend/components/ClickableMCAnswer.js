@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Typography } from '@material-tailwind/react';
+import useSound from 'use-sound';
 const ClickableMCAnswer = ({
   text,
   label,
@@ -14,13 +15,24 @@ const ClickableMCAnswer = ({
   isLongText,
 }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
-  const isShowCorrectAnswer = isShowAnswer && label === answerLabel;
+
+  const isCorrect = label === answerLabel;
+  const isShowCorrectAnswer = isShowAnswer && isCorrect;
+
+  const [playCorrect] = useSound('/correct.mp3');
+  const [playIncorrect] = useSound('/incorrect.mp3');
 
   const handleClickAnswer = () => {
     if (isDisabled) return;
+    if (isCorrect) {
+      playCorrect();
+    } else {
+      playIncorrect();
+    }
     onClick();
-    setIsCorrectAnswer(label === answerLabel);
-    if (label !== answerLabel && isSelectStar) {
+    setIsCorrectAnswer(isCorrect);
+
+    if (!isCorrect && isSelectStar) {
       onToggleStar();
     }
   };

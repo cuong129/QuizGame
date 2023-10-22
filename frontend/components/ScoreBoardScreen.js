@@ -7,6 +7,8 @@ import Second from '../public/Icon 2nd.png';
 import Third from '../public/Icon 3rd.png';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import useSound from 'use-sound';
+import { useEffect } from 'react';
 
 const ScoreLine = ({ index, name, score, isRoundOne }) => {
   const imgSrc =
@@ -36,9 +38,13 @@ const ScoreLine = ({ index, name, score, isRoundOne }) => {
 
 export default function ScoreBoardScreen({ players, isRoundOne }) {
   const router = useRouter();
+  const [playFinish, { stop }] = useSound('ceremony.mp3');
+
+  playFinish();
 
   const handleFinish = () => {
-    router.push('/');
+    router.replace('/');
+    stop();
   };
 
   const handleExportExcel = () => {
