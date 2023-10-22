@@ -2,7 +2,7 @@ import { Typography } from '@material-tailwind/react';
 
 const RuleTwo = () => {
   return (
-    <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[45vh] shadow px-[100px]'>
+    <div className='bg-white rounded-xl p-12 w-[87.5vw] h-[55vh] shadow px-[100px]'>
       <Typography className='text-primary-1 text-[40px] text-center font-bold uppercase mb-8'>
         Phong cách giao thông
       </Typography>

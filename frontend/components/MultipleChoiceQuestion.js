@@ -20,6 +20,10 @@ const MultipleChoiceQuestion = ({
 
   const choices = getChoicesByAnswer(answer);
 
+  const isLongText = choices.some((choice) => choice.split(' ').length >= 30);
+
+  const isLongQuestion = request.split(' ').length >= 50;
+
   return (
     <div>
       <div className='bg-white rounded-xl p-8 w-[87.5vw] h-[23.2vh] mt-[10vh] shadow relative'>
@@ -42,12 +46,17 @@ const MultipleChoiceQuestion = ({
           </div>
         )}
         <div className='flex flex-col justify-center h-full'>
-          <Typography className='font-bold text-center text-[38px]'>
+          <Typography
+            className={classNames(
+              'font-bold text-center',
+              isLongQuestion ? 'text-[32px]' : 'text-[38px]'
+            )}
+          >
             {request}
           </Typography>
         </div>
       </div>
-      <div className='mt-[50px] grid grid-cols-2 gap-8'>
+      <div className='grid grid-cols-2 gap-4 mt-4'>
         {choices.map((item, index) =>
           !hasLuckyStar ? (
             <MCAnswer
@@ -56,6 +65,7 @@ const MultipleChoiceQuestion = ({
               label={MC_LABELS[index]}
               answerLabel={correctAnswer}
               isShowAnswer={isShowAnswer}
+              isLongText={isLongText}
             />
           ) : (
             <ClickableMCAnswer
@@ -68,6 +78,7 @@ const MultipleChoiceQuestion = ({
               onClick={onClickAnswer}
               isSelectStar={isSelectStar}
               onToggleStar={onToggleStar}
+              isLongText={isLongText}
             />
           )
         )}

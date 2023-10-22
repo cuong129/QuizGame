@@ -12,7 +12,7 @@ const ScoreLine = ({ index, name, score, isRoundOne }) => {
   const imgSrc =
     index === 0 ? First : index === 1 ? Second : isRoundOne ? null : Third;
   return (
-    <div className='w-[45vw] h-[10vh] bg-white rounded-full flex justify-between items-center p-1 relative'>
+    <div className='w-[55vw] h-[10vh] bg-white rounded-full flex justify-between items-center p-1 relative'>
       {!!imgSrc && (
         <Image
           src={imgSrc}

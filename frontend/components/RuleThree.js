@@ -7,7 +7,7 @@ const RuleThree = () => {
       <Typography className='text-primary-1 text-[40px] text-center font-bold uppercase mb-8'>
         Giao thông khoẻ
       </Typography>
-      <div className='overflow-auto h-full'>
+      <div className='h-full overflow-auto'>
         <Typography className='text-[32px] font-semibold text-center'>
           Mỗi khối chơi một trò chơi vận động, trò chơi do BTC đưa ra. Căn cứ
           vào thứ hạng sẽ cộng điểm tương ứng cho các đội (+30, +25, +20, +15).
@@ -15,8 +15,8 @@ const RuleThree = () => {
 
         <Image
           src={ChildrenImage}
-          width={600}
-          height={336}
+          width={500}
+          height={300}
           alt='image'
           className='mx-auto'
         />

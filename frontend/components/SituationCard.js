@@ -66,7 +66,7 @@ export default function SituationCard({ index, url }) {
             </CountdownCircleTimer>
           </div>
           <ReactPlayer url={url} width={'100%'} height={'80%'} controls />
-          <div className='absolute flex items-center justify-between w-[98%] bottom-4'>
+          <div className='absolute flex items-center justify-between w-[97%] bottom-4'>
             <Button
               className='bg-red-500 w-[150px] h-[60px] flex items-center justify-center border-2 border-white'
               onClick={() => {

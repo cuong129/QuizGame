@@ -11,6 +11,7 @@ const ClickableMCAnswer = ({
   isImageQuestion,
   isSelectStar,
   onToggleStar,
+  isLongText,
 }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const isShowCorrectAnswer = isShowAnswer && label === answerLabel;
@@ -65,9 +66,10 @@ const ClickableMCAnswer = ({
       </div>
       <Typography
         className={classNames(
-          'text-[27px] font-semibold whitespace-normal ml-[18px]',
+          'font-semibold whitespace-normal ml-[18px]',
           isImageQuestion ? 'max-w-[32vw]' : 'max-w-[33vw] text-center',
-          (isCorrectAnswer !== null || isShowCorrectAnswer) && 'text-white'
+          (isCorrectAnswer !== null || isShowCorrectAnswer) && 'text-white',
+          isLongText ? 'text-[20px]' : 'text-[27px]'
         )}
       >
         {text}

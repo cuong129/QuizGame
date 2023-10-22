@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Typography } from '@material-tailwind/react';
 
-const MCAnswer = ({ text, label, answerLabel, isShowAnswer }) => {
+const MCAnswer = ({ text, label, answerLabel, isShowAnswer, isLongText }) => {
   const isCorrectAnswer = label === answerLabel && isShowAnswer;
   return (
     <div
@@ -28,8 +28,9 @@ const MCAnswer = ({ text, label, answerLabel, isShowAnswer }) => {
       </div>
       <Typography
         className={classNames(
-          'text-[27px] font-semibold whitespace-normal ml-[18px] max-w-[33vw] text-center',
-          isCorrectAnswer && 'text-white'
+          'font-semibold whitespace-normal ml-[18px] max-w-[33vw] text-center',
+          isCorrectAnswer && 'text-white',
+          isLongText ? 'text-[20px]' : 'text-[27px]'
         )}
       >
         {text}

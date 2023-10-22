@@ -42,7 +42,7 @@ export default function ScoreDrawer({
       open={open}
       onClose={onClose}
       className='bg-white flex flex-col items-center py-[10vh] px-[50px]'
-      size={694}
+      size={750}
     >
       <Typography className='uppercase font-bold text-[40px]  text-primary-dark mb-[60px]'>
         Thống kê điểm thi
@@ -131,7 +131,7 @@ const ScoreField = ({
         isDisabledCounter ? 'rounded-l-full' : 'rounded-full'
       )}
     >
-      <Typography className='text-[28px] font-bold my-[30px] ml-[150px]'>
+      <Typography className='text-[28px] font-bold my-[30px] ml-[140px]'>
         {name}
       </Typography>
       <div

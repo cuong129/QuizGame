@@ -11,17 +11,14 @@ import MultipleChoiceQuestionWithImage from '@/components/MultipleChoiceQuestion
 import Rule from '@/components/Rule';
 import RuleTwo from '@/components/RuleTwo';
 import RuleThree from '@/components/RuleThree';
-import {
-  QUESTIONS,
-  QUESTION_TYPE,
-  ROUND2_QUESTIONS,
-  VIDEO_URLS,
-} from '@/utils/constants';
+import { QUESTION_TYPE, VIDEO_URLS } from '@/utils/constants';
 import MultipleChoiceQuestion from '@/components/MultipleChoiceQuestion';
 import ScoreBoardScreen from '@/components/ScoreBoardScreen';
 import SituationCard from '@/components/SituationCard';
 import axios from 'axios';
 import { ApiGetTopicById } from '@/utils/endpoints';
+import useSound from 'use-sound';
+//import tickSound from '../../public/tick.mp3';
 
 export default function Game() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +42,8 @@ export default function Game() {
   const [isStar, setIsStar] = useState(false);
 
   const [isFinish, setIsFinish] = useState(false);
+
+  const [play, { stop }] = useSound('/tick.mp3');
 
   // --- ROUND 2 variables & functions ----
 
@@ -87,6 +86,13 @@ export default function Game() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (isCounting && (isRoundOne || stage === 1)) {
+      play();
+    } else {
+      stop();
+    }
+  }, [isCounting, stage]);
   const handleShowCorrectAnswer = () => {
     setIsShowAnswer(true);
   };
@@ -295,7 +301,10 @@ export default function Game() {
               </Button>
               <Button
                 className='bg-primary-dark h-[60px] flex items-center justify-center gap-3 w-100  border-2 border-white'
-                onClick={() => setStage(1)}
+                onClick={() => {
+                  resetState();
+                  setStage(1);
+                }}
               >
                 <Typography className='text-xl font-semibold'>
                   Tinh nhuệ giao thông
@@ -376,7 +385,7 @@ export default function Game() {
         )}
         {stage === 3 && (
           <>
-            <div className='w-[87.5vw] h-[70vh] grid grid-cols-2 gap-8 mt-10'>
+            <div className='w-[87.5vw] h-[70vh] grid grid-cols-2 gap-4 mt-10'>
               {VIDEO_URLS.map((url, index) => (
                 <SituationCard key={index} index={index} url={url} />
               ))}
