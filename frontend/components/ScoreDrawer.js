@@ -41,10 +41,10 @@ export default function ScoreDrawer({
     <Drawer
       open={open}
       onClose={onClose}
-      className='bg-white flex flex-col items-center py-[10vh] px-[50px]'
+      className='bg-white flex flex-col items-center p-[50px]'
       size={750}
     >
-      <Typography className='uppercase font-bold text-[40px]  text-primary-dark mb-[60px]'>
+      <Typography className='uppercase font-bold text-[40px] text-primary-dark mb-[60px]'>
         Thống kê điểm thi
       </Typography>
       <div className='flex flex-col items-center w-full'>
@@ -70,7 +70,7 @@ export default function ScoreDrawer({
             </Alert>
           </div>
           <Button
-            className='bg-primary-dark w-[160px] !h-[60px] self-end  justify-end mt-[60px]'
+            className='bg-primary-dark w-[160px] !h-[60px] self-end justify-end mt-[25px]'
             onClick={handleSubmit}
             disabled={isDisable}
           >
