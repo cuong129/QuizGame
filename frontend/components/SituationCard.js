@@ -9,6 +9,13 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import ReactPlayer from 'react-player/lazy';
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 
+const getVideoURL = (url) => {
+  return url
+    .replace('file/d/', 'uc?id=')
+    .replace('/view?usp=share_link', '')
+    .replace('/view?usp=sharing', '');
+};
+
 export default function SituationCard({ index, url }) {
   const [open, setOpen] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
@@ -65,7 +72,12 @@ export default function SituationCard({ index, url }) {
               )}
             </CountdownCircleTimer>
           </div>
-          <ReactPlayer url={url} width={'100%'} height={'80%'} controls />
+          <ReactPlayer
+            url={getVideoURL(url)}
+            width={'100%'}
+            height={'80%'}
+            controls
+          />
           <div className='absolute flex items-center justify-between w-[97%] bottom-4'>
             <Button
               className='bg-red-500 w-[150px] h-[60px] flex items-center justify-center border-2 border-white'

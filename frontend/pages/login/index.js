@@ -11,12 +11,12 @@ export default function Login() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  // useEffect(() => {
-  //   if (!token) return;
-  //   Cookies.set('token', token, { expires: 2 });
+  useEffect(() => {
+    if (!token) return;
+    Cookies.set('token', token, { expires: 2 });
 
-  //   Router.push('/question').then((_) => console.log('Go to dashboard'));
-  // }, [token]);
+    Router.push('/').then((_) => console.log('Go to game'));
+  }, [token]);
 
   const onSubmit = () => {
     //TODO: authen
@@ -27,8 +27,8 @@ export default function Login() {
       <Typography variant='h4' color='blue-gray'>
         Đăng nhập
       </Typography>
-      <div className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'>
-        <div className='mb-4 flex flex-col gap-6'>
+      <div className='max-w-screen-lg mt-8 mb-2 w-80 sm:w-96'>
+        <div className='flex flex-col gap-6 mb-4'>
           <Input
             type='text'
             name='userName'

@@ -5,6 +5,7 @@ export const callAsync = async (asyncCall) => {
   } catch (err) {
     const resp = makeResponseWithErrors(err);
     console.log('callAsync Error:', resp);
+    window.alert('Sai tài khoản hoặc mật khẩu');
     return resp;
   }
 };
@@ -15,6 +16,7 @@ export const makeResponse = (resp) => {
     error: '',
     status: resp.status,
   };
+  console.log(response);
   return response;
 };
 

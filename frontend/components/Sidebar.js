@@ -7,6 +7,9 @@ import {
   Square3Stack3DIcon,
   ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/outline';
+import Cookies from 'js-cookie';
+import { clearToken } from '@/redux/auth/auth-slice';
+import { useDispatch } from 'react-redux';
 const navItems = [
   {
     label: 'Quản lý câu hỏi',
@@ -20,14 +23,15 @@ const navItems = [
   },
 ];
 const Sidebar = ({ open, setOpen }) => {
+  const dispatch = useDispatch();
   const ref = useRef(null);
   useOnClickOutside(ref, (e) => {
     setOpen(false);
   });
 
   const onLogOut = () => {
-    // TODO: Log out fuction
-    console.log('log out');
+    Cookies.remove('token');
+    dispatch(clearToken());
   };
   return (
     <div
@@ -41,9 +45,9 @@ const Sidebar = ({ open, setOpen }) => {
       })}
       ref={ref}
     >
-      <nav className='md:sticky top-0 md:top-16'>
+      <nav className='top-0 md:sticky md:top-16'>
         {/* nav items */}
-        <ul className='py-2 flex flex-col gap-2'>
+        <ul className='flex flex-col gap-2 py-2'>
           {navItems.map((item, index) => {
             return (
               <Link key={index} href={item.href}>

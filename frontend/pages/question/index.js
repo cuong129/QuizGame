@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { ApiImportQuestion, ApiGetAllQuestion, ApiRemoveQuestion } from '@/utils/endpoints';
+import {
+  ApiImportQuestion,
+  ApiGetAllQuestion,
+  ApiRemoveQuestion,
+} from '@/utils/endpoints';
 import {
   Typography,
   IconButton,
@@ -11,8 +15,14 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-
-const TABLE_HEAD = ['Câu hỏi', 'Đáp án', 'Loại câu hỏi', 'Cấp bậc', 'Tệp đính kèm', ''];
+const TABLE_HEAD = [
+  'Câu hỏi',
+  'Đáp án',
+  'Loại câu hỏi',
+  'Cấp bậc',
+  'Tệp đính kèm',
+  '',
+];
 
 export default function Dashboard() {
   const router = useRouter();
@@ -24,7 +34,7 @@ export default function Dashboard() {
   };
   const handleUploadFile = async (event) => {
     const excelFile = new FormData();
-    excelFile.append("excelFile", event.target.files[0]);
+    excelFile.append('excelFile', event.target.files[0]);
     setIsLoading(true);
     try {
       await axios.post(ApiImportQuestion, excelFile);
@@ -35,8 +45,8 @@ export default function Dashboard() {
   };
 
   const handleRemoveQuestion = (id) => {
-    axios.delete(ApiRemoveQuestion + id)
-  }
+    axios.delete(ApiRemoveQuestion + id);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -72,18 +82,18 @@ export default function Dashboard() {
           </Button>
         </ButtonGroup>
       </div>
-      <table className='border border-blue-gray-100 w-full min-w-max table-auto text-left bg-white shadow'>
+      <table className='w-full text-left bg-white border shadow table-auto border-blue-gray-100'>
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
               <th
                 key={head}
-                className='border-b border-blue-gray-100 bg-blue-gray-50 p-4'
+                className='p-4 border-b border-blue-gray-100 bg-blue-gray-50'
               >
                 <Typography
                   variant='small'
                   color='blue-gray'
-                  className='font-bold leading-none opacity-70 uppercase'
+                  className='font-bold leading-none uppercase opacity-70'
                 >
                   {head}
                 </Typography>
@@ -92,65 +102,76 @@ export default function Dashboard() {
           </tr>
         </thead>
         <tbody>
-          {data?.length > 0 && data.map(({ id, request, answer, type, schoolLevel, attachmentUrl }, index) => {
-            const isLast = index === data.length - 1;
-            const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
+          {data?.length > 0 &&
+            data.map(
+              (
+                { id, request, answer, type, schoolLevel, attachmentUrl },
+                index
+              ) => {
+                const isLast = index === data.length - 1;
+                const classes = isLast
+                  ? 'p-4'
+                  : 'p-4 border-b border-blue-gray-50';
 
-            return (
-              <tr key={id}>
-                <td className={classes}>
-                  <Typography
-                    variant='small'
-                    color='blue-gray'
-                    className='font-normal'
-                  >
-                    {request}
-                  </Typography>
-                </td>
-                <td className={classes}>
-                  <Typography
-                    variant='small'
-                    color='blue-gray'
-                    className='font-normal'
-                  >
-                    {answer}
-                  </Typography>
-                </td>
-                <td className={classes}>
-                  <Typography
-                    variant='small'
-                    color='blue-gray'
-                    className='font-normal'
-                  >
-                    {type}
-                  </Typography>
-                </td>
-                <td className={classes}>
-                  <Typography
-                    variant='small'
-                    color='blue-gray'
-                    className='font-normal'
-                  >
-                    {schoolLevel}
-                  </Typography>
-                </td>
-                <td className={classes}>
-                  <Typography
-                    variant='small'
-                    color='blue-gray'
-                    className='font-normal'
-                  >
-                    {attachmentUrl}
-                  </Typography>
-                </td>
-                <td className={classNames(classes, 'w-[50px]')} onClick={() => handleRemoveQuestion(id)}>
-                  <IconButton variant='text' color='red'>
-                    <i className='fas fa-trash' />
-                  </IconButton>
-                </td>
-              </tr>
-            );
-          })}
+                return (
+                  <tr key={id}>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {request}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {answer}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {type}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {schoolLevel}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        {attachmentUrl}
+                      </Typography>
+                    </td>
+                    <td
+                      className={classNames(classes, 'w-[50px]')}
+                      onClick={() => handleRemoveQuestion(id)}
+                    >
+                      <IconButton variant='text' color='red'>
+                        <i className='fas fa-trash' />
+                      </IconButton>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
         </tbody>
       </table>
     </DashboardLayout>

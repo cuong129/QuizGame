@@ -26,17 +26,18 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        {/* {router.pathname === '/login' ? (
+        <Head>
+          <title>Hành Trình Văn Minh</title>
+        </Head>
+        {router.pathname === '/login' ? (
           <Component {...pageProps} />
         ) : (
           <AuthRequired>
             <Component {...pageProps} />
           </AuthRequired>
-        )} */}
-        <Head>
-          <title>Hành Trình Văn Minh</title>
-        </Head>
-        <Component {...pageProps} />
+        )}
+
+        {/* <Component {...pageProps} /> */}
       </PersistGate>
     </Provider>
   );

@@ -12,7 +12,7 @@ export const MC_ANSWERS = [
 export const QUESTION_TYPE = {
   MultipleChoice: 'TracNghiem',
   Image: 'HinhAnh',
-  Video: 'Video',
+  Video: 'XuLyTinhHuong',
 };
 
 export const QUESTION = {

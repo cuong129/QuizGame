@@ -54,6 +54,7 @@ export default function Game() {
 
   const [stage, setStage] = useState(0); // 0: Phong cách giao thông, 1: 5 câu hỏi, 2: giao thông khoẻ, 3: 4 câu tình huống
   const [scoreDrawerKey, setScoreDrawerKey] = useState(0);
+  const [videoUrls, setVideoUrls] = useState([]);
   // --------
 
   const isRoundOne =
@@ -83,7 +84,18 @@ export default function Game() {
     (async () => {
       try {
         const response = await axios.get(ApiGetTopicById + topicId);
-        setQuestions(response.data.questions);
+        if (response?.data?.questions?.length > 0) {
+          setQuestions(
+            response.data.questions.filter(
+              (x) => x.type !== QUESTION_TYPE.Video
+            )
+          );
+          setVideoUrls(
+            response.data.questions.filter(
+              (x) => x.type === QUESTION_TYPE.Video
+            )
+          );
+        }
         setNotFound(response.data == null);
       } finally {
         setIsLoading(false);
@@ -412,9 +424,16 @@ export default function Game() {
         {stage === 3 && (
           <>
             <div className='w-[87.5vw] h-[70vh] grid grid-cols-2 gap-4 mt-10'>
-              {VIDEO_URLS.map((url, index) => (
-                <SituationCard key={index} index={index} url={url} />
-              ))}
+              {videoUrls.length > 0 &&
+                videoUrls
+                  .sort((a, b) => a.request.localeCompare(b.request))
+                  .map(({ attachmentUrl }, index) => (
+                    <SituationCard
+                      key={index}
+                      index={index}
+                      url={attachmentUrl}
+                    />
+                  ))}
             </div>
             <Button
               className='!absolute bottom-4 right-[6.25vw] bg-red-500 h-[60px] flex items-center justify-center gap-3 w-100 border-2 border-white'

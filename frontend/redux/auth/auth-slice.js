@@ -35,11 +35,12 @@ const authSlice = createSlice({
     });
     builder.addCase(authLogin.fulfilled, (state, action) => {
       const response = action.payload;
+      console.log(response);
       if (response?.error) {
         state.loginError = response.error;
         return;
       }
-      state.token = response?.token || '';
+      state.token = response?.data || '';
       state.loginError = '';
     });
   },
