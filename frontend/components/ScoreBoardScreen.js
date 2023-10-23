@@ -39,9 +39,9 @@ export default function ScoreBoardScreen({
   isRoundOne,
   stopMusic,
   schoolLevel,
+  topicName,
 }) {
   const router = useRouter();
-
   const handleFinish = () => {
     router.replace('/');
     stopMusic();
@@ -59,7 +59,7 @@ export default function ScoreBoardScreen({
       cellStyles: true,
     });
     const finalData = new Blob([excelBuffer], { type: 'xlsx' });
-    FileSaver.saveAs(finalData, 'Data.xlsx');
+    FileSaver.saveAs(finalData, `${topicName ?? 'Data'}.xlsx`);
   };
 
   const isCeremony = schoolLevel > 0;
@@ -75,7 +75,7 @@ export default function ScoreBoardScreen({
       : 'Sắc màu giao thông';
   return (
     <div
-      className='relative flex flex-col items-center justify-center w-screen h-screen'
+      className='relative flex flex-col items-center justify-center w-screen h-screen overflow-hidden'
       style={{
         backgroundImage: "url('/scoreboard.jpeg')",
         backgroundSize: 'cover',
@@ -84,6 +84,20 @@ export default function ScoreBoardScreen({
       }}
     >
       <Banner title={title} header={header} />
+      <Image
+        src='/firework1.gif'
+        width={500}
+        height={500}
+        alt='star'
+        className='absolute left-0 -translate-y-1/2 top-1/2 mix-blend-screen'
+      />
+      <Image
+        src='/firework2.gif'
+        width={600}
+        height={600}
+        alt='star'
+        className='absolute top-0 right-0 translate-x-1/4 mix-blend-screen'
+      />
       <div className='grid gap-8'>
         {players
           .sort((a, b) => b.score - a.score)

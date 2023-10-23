@@ -27,6 +27,7 @@ export default function Game() {
   const [players, setPlayers] = useState([]);
 
   const [questions, setQuestions] = useState([]);
+  const [topicName, setTopicName] = useState('');
 
   const [questionIndex, setQuestionIndex] = useState(0);
 
@@ -44,11 +45,12 @@ export default function Game() {
   const [isFinish, setIsFinish] = useState(false);
 
   // SOUND
-  const [play, { stop }] = useSound('/tick.mp3');
+  const [playTick, { stop: stopTick }] = useSound('/tick.mp3');
   const [playCorrect] = useSound('/correct.mp3');
   const [playStar] = useSound('star.mp3');
   const [playNext] = useSound('next.wav');
-  const [playFinish, finishProps] = useSound('ceremony.mp3');
+  const [playFinish, finishProps] = useSound('ceremony.mp3', { loop: true });
+  const [playNervous, { stop: stopNervous }] = useSound('nervous.mp3');
 
   // --- ROUND 2 variables & functions ----
 
@@ -85,6 +87,7 @@ export default function Game() {
       try {
         const response = await axios.get(ApiGetTopicById + topicId);
         if (response?.data?.questions?.length > 0) {
+          setTopicName(response?.data?.topic?.name);
           setQuestions(
             response.data.questions.filter(
               (x) => x.type !== QUESTION_TYPE.Video
@@ -105,9 +108,11 @@ export default function Game() {
 
   useEffect(() => {
     if (isCounting && (isRoundOne || stage === 1)) {
-      play();
+      playTick();
+      playNervous();
     } else {
-      stop();
+      stopTick();
+      stopNervous();
     }
   }, [isCounting, stage]);
   const handleShowCorrectAnswer = () => {
@@ -148,7 +153,6 @@ export default function Game() {
     setPlayers(newPlayers);
   };
 
-  //if (isLoading) return <h1>Loading...</h1>;
   if (notFound) return <div>404 Not Found</div>;
   if (isLoading) return <div>Loading...</div>;
   if (isFinish)
@@ -157,6 +161,7 @@ export default function Game() {
         isRoundOne={isRoundOne}
         players={players}
         stopMusic={finishProps.stop}
+        topicName={topicName}
       />
     );
   // ------ ROUND 1 ---------

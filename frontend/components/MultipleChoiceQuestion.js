@@ -5,6 +5,7 @@ import { MC_LABELS } from '@/utils/constants';
 import { getChoicesByAnswer } from '@/utils/utilities';
 import ClickableMCAnswer from './ClickableMCAnswer';
 import classNames from 'classnames';
+import Image from 'next/image';
 
 const MultipleChoiceQuestion = ({
   index,
@@ -37,12 +38,16 @@ const MultipleChoiceQuestion = ({
             className='absolute cursor-pointer bottom-3 right-3'
             onClick={onToggleStar}
           >
-            <i
-              className={classNames(
-                'fa-solid fa-star fa-3x',
-                isSelectStar ? 'text-amber-500' : 'text-gray-200'
-              )}
-            ></i>
+            {isSelectStar ? (
+              <Image src='/star.gif' width={60} height={60} alt='star' />
+            ) : (
+              <i
+                className={classNames(
+                  'fa-solid fa-star fa-3x',
+                  'text-gray-200'
+                )}
+              ></i>
+            )}
           </div>
         )}
         <div className='flex flex-col justify-center h-full'>

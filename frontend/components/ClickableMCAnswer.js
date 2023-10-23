@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Typography } from '@material-tailwind/react';
 import useSound from 'use-sound';
+
 const ClickableMCAnswer = ({
   text,
   label,
@@ -40,6 +41,7 @@ const ClickableMCAnswer = ({
     <div
       className={classNames(
         'rounded-3xl p-[18px] flex items-center border-[3px] w-full max-h-[20vh] cursor-pointer',
+        'hover:scale-[1.03]',
         isShowCorrectAnswer
           ? 'bg-success border-white'
           : isCorrectAnswer === null

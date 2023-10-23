@@ -37,7 +37,7 @@ export default function Ceremony() {
   const [secondaryData, setSecondaryData] = useState(null);
   const [schoolLevel, setSchoolLevel] = useState(0);
 
-  const [playFinish, { stop }] = useSound('ceremony.mp3');
+  const [playFinish, { stop }] = useSound('ceremony.mp3', { loop: true });
 
   const isShowResult = schoolLevel > 0;
   const handlePrimary = async (file) => {

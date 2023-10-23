@@ -75,11 +75,15 @@ export default function Home() {
   };
 
   const handleStartGame = () => {
-    const queryParams = new URLSearchParams({
-      topicId: topic?.value,
-      players: players,
-    }).toString();
-    router.push(`/game?${queryParams}`);
+    if (!topic?.value) {
+      window.alert('Vui lòng chọn bộ đề');
+    } else {
+      const queryParams = new URLSearchParams({
+        topicId: topic?.value,
+        players: players,
+      }).toString();
+      router.push(`/game?${queryParams}`);
+    }
   };
 
   return (
