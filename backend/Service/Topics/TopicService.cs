@@ -198,6 +198,11 @@ public class TopicService : ITopicService
         try
         {
             var topic = await _dbContext.Topics.SingleOrDefaultAsync(x => x.Id == id);
+            var questionTopics = await _dbContext.Questions.Where(x => x.TopicId == id).ToListAsync();
+            foreach (var questionTopic in questionTopics)
+            {
+                questionTopic.TopicId = null;
+            }
             _dbContext.Topics.Remove(topic);
             await _dbContext.SaveChangesAsync();
 
