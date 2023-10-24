@@ -26,7 +26,7 @@ export default function SituationCard({ index, url }) {
         className='flex flex-col items-center justify-center w-full h-full cursor-pointer'
         style={{
           backgroundImage: "url('/situation.png')",
-          backgroundSize: 'cover',
+          backgroundSize: '100% 100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
