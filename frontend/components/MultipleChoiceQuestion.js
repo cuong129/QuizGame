@@ -39,7 +39,7 @@ const MultipleChoiceQuestion = ({
             onClick={onToggleStar}
           >
             {isSelectStar ? (
-              <Image src='/star.gif' width={60} height={60} alt='star' />
+              <Image src='/Star.gif' width={60} height={60} alt='star' />
             ) : (
               <i
                 className={classNames(
