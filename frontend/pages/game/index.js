@@ -71,6 +71,8 @@ export default function Game() {
 
   const hasLuckyStar = isRoundOne && questionIndex > 7 && questionIndex < 12;
 
+  const isClickableAnswer = isRoundOne && questionIndex > 7;
+
   const isDisabledMCAnswer = answerClickCount === 2;
   useEffect(() => {
     setIsLoading(true);
@@ -233,6 +235,7 @@ export default function Game() {
                     }
                     setIsStar((prev) => !prev);
                   }}
+                  isClickableAnswer={isClickableAnswer}
                 />
               )}
 

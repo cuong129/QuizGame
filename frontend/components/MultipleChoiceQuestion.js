@@ -16,6 +16,7 @@ const MultipleChoiceQuestion = ({
   isShowAnswer,
   isSelectStar,
   onToggleStar,
+  isClickableAnswer,
 }) => {
   const { request, answer, correctAnswer } = data;
 
@@ -63,7 +64,7 @@ const MultipleChoiceQuestion = ({
       </div>
       <div className='grid grid-cols-2 gap-4 mt-4'>
         {choices.map((item, index) =>
-          !hasLuckyStar ? (
+          !isClickableAnswer ? (
             <MCAnswer
               key={item + index}
               text={item}
